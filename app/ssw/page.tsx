@@ -15,11 +15,9 @@ const sswData = {
         icon: BriefcaseBusiness,
         description: 'Designed for foreign nationals with a considerable degree of knowledge or experience belonging to specific industry fields. Allows working in Japan for up to 5 years.',
         items: [
-            { id: 'nursing', title: 'Nursing Care', description: 'Work in specialized nursing facilities, providing essential care and support for the elderly in Japan.', image: '/class.webp' },
-            { id: 'food', title: 'Food Service Industry', description: 'Opportunities in the dynamic Japanese restaurant, catering, and food preparation sectors.', image: '/consult.webp' },
-            { id: 'agriculture', title: 'Agriculture', description: 'Engage in general crop farming and livestock agriculture across various regions of Japan.', image: '/visa.png' },
-            { id: 'building', title: 'Building Cleaning', description: 'Professional interior building cleaning management for commercial and hotel properties.', image: '/consult.webp' },
-            { id: 'manufacturing', title: 'Manufacturing', description: 'Work within machine parts tooling, industrial machinery, or electrical/electronic information industries.', image: '/class.webp' }
+
+            { id: 'transport', title: 'Truck Driving Skill Course', description: 'Professional driving and logistics operations for moving goods and people across Japan.', image: '/visa/transport.webp' },
+
         ]
     },
     ssw2: {
@@ -28,9 +26,9 @@ const sswData = {
         icon: Wrench,
         description: 'For individuals with proficient skills belonging to specific industry fields. Offers the possibility of bringing family members and unlimited visa renewals leading to permanent residency.',
         items: [
-            { id: 'construction', title: 'Construction', description: 'Advanced roles in civil engineering, architecture, and specialized construction machinery operation.', image: '/class.webp' },
-            { id: 'shipbuilding', title: 'Shipbuilding & Marine', description: 'Highly skilled welding, painting, and machining within the Japanese shipbuilding industry.', image: '/consult.webp' },
-            { id: 'aviation', title: 'Aviation', description: 'Airport ground handling and aircraft maintenance support operations.', image: '/visa.png' }
+
+            { id: 'food-service-2', title: 'SSW Food Service Skill Course (Category II)', description: 'Advanced management and specialized skills for the Japanese food service industry, leading to long-term residency.', image: '/visa/food service.webp' },
+            { id: 'food-manufacturing-2', title: 'SSW Food Manufacturing Skill Course (Category II)', description: 'Professional leadership and technical mastery in food production lines and manufacturing management.', image: '/visa/food and bev.webp' }
         ]
     }
 };
@@ -72,17 +70,17 @@ export default function SSWPage() {
             {/* SSW Content Section */}
             <section className="py-16 md:py-24 bg-white min-h-[600px]">
                 <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
-                    
+
                     {/* Tab Switcher */}
                     <div className="flex flex-col items-center mb-16">
                         <div className="inline-flex bg-gray-50 border border-gray-200 p-1.5 w-full sm:w-auto max-w-md rounded-none shadow-sm">
-                            <button 
+                            <button
                                 onClick={() => setActiveTab('ssw1')}
                                 className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'ssw1' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
                             >
                                 <BriefcaseBusiness size={16} /> <span className="sm:inline">SSW I</span>
                             </button>
-                            <button 
+                            <button
                                 onClick={() => setActiveTab('ssw2')}
                                 className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'ssw2' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
                             >
@@ -113,11 +111,11 @@ export default function SSWPage() {
                                     {activeData.items.map((item: { id: string; title: string; description: string; image: string }, idx: number) => (
                                         <div key={idx} className="bg-white border border-gray-100 shadow-sm flex flex-col group hover:shadow-xl transition-all h-full">
                                             <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
-                                                <Image 
-                                                    src={item.image} 
-                                                    alt={item.title} 
-                                                    fill 
-                                                    className="object-cover transition-transform duration-700 group-hover:scale-105" 
+                                                <Image
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    fill
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>

@@ -19,7 +19,7 @@ const visaData = {
                 title: 'Scholarship Programs',
                 description: 'Fully or partially funded opportunities for outstanding students.',
                 items: [
-                    { title: 'Scholarship', description: 'Full tuition coverage plus living allowance while training as a certified caregiver in Japan.', image: '/class.webp' },
+                    { title: 'Scholarship', description: 'Full tuition coverage plus living allowance while training as a certified caregiver in Japan.', image: '/visa/scholarship.webp' },
 
                 ]
             },
@@ -33,13 +33,19 @@ const visaData = {
         subCategories: [
             {
                 id: 'ssw',
-                title: 'SSW Categories (Specified Skilled Worker)',
+                title: 'SSW  (Specified Skilled Worker)',
                 description: 'For skilled workers passing technical and language exams in specific industries.',
                 items: [
-                    { title: 'Nursing Care', description: 'Work in high-end nursing homes and care facilities. Immediate shortage area.', image: '/class.webp' },
-                    { title: 'Food Service', description: 'Opportunities in the booming Japanese restaurant and catering industry.', image: '/consult.webp' },
-                    { title: 'Agriculture', description: 'Work in modern agricultural farming and crop production across Japan.', image: '/visa.png' },
-                    { title: 'Building Cleaning', description: 'Professional commercial building and hotel maintenance jobs.', image: '/consult.webp' }
+                    { title: 'Caregiver', description: 'Work in specialized nursing facilities, providing essential care and support for the elderly in Japan.', image: '/visa/caregiver.webp' },
+                    { title: 'Food Service', description: 'Opportunities in the dynamic Japanese restaurant, catering, and food preparation sectors.', image: '/visa/food service.webp' },
+                    { title: 'Agriculture', description: 'Engage in general crop farming and livestock agriculture across various regions of Japan.', image: '/visa/agriculture.webp' },
+                    { title: 'Building Cleaning', description: 'Professional interior building cleaning management for commercial and hotel properties.', image: '/visa/cleaning.webp' },
+                    { title: 'Food & Beverage Manufacturing', description: 'Work in food production plants, processing facilities, and quality control lines.', image: '/visa/food and bev.webp' },
+                    { title: 'Airport Ground Handling', description: 'Support airport operations through baggage handling, cargo management, and ground services.', image: '/visa/airport g.webp' },
+                    { title: 'Accommodation', description: 'Provide hospitality and management services in Japanese hotels, traditional inns, and resorts.', image: '/visa/acommodation.webp' },
+                    { title: 'Automobile Transport', description: 'Professional driving and logistics operations for moving goods and people across Japan.', image: '/visa/transport.webp' },
+                    { title: 'Construction', description: 'Skilled roles in civil engineering, architecture, and specialized construction machinery operation.', image: '/visa/construct.webp' },
+                    { title: 'Automobile Mechanic', description: 'Specialized maintenance and repair services for vehicles in certified Japanese workshops.', image: '/visa/automobile m.webp' }
                 ]
             },
             {
@@ -47,19 +53,17 @@ const visaData = {
                 title: 'Technical Intern Training (TITP)',
                 description: 'Learn Japanese advanced skills through practical employment.',
                 items: [
-                    { title: 'Manufacturing Intern', description: '3-5 years technical training in Japanese factories and assembly lines.', image: '/class.webp' },
-                    { title: 'Construction Intern', description: 'Learn advanced Japanese civil engineering and building techniques.', image: '/consult.webp' }
+
+                    { title: 'Construction Intern', description: 'Learn advanced Japanese civil engineering and building techniques.', image: '/visa/construct tr.jpg' }
                 ]
             },
             {
                 id: 'highlySkilled',
-                title: 'Highly Skilled / Specialist',
+                title: 'Engineer/Specialist in Humanities/International Services',
                 description: 'For IT engineers, researchers, and specialized degree-holding professionals.',
                 items: [
-                    { title: 'IT Engineer Visa', description: 'For certified software developers, data scientists, and infrastructure engineers.', image: '/consult.webp' },
-                    { title: 'Specialist in Humanities', description: 'English teachers, marketers, and translator positions in corporate Japan.', image: '/class.webp' },
-                    { title: 'Specialist in International Services', description: 'For professionals working in international trade, finance, and consulting.', image: '/consult.webp' },
-                    { title: 'Engineer / Specialist in Natural Sciences', description: 'For engineers and scientists working in research and development.', image: '/class.webp' }
+                    { title: 'Engineer,Humanities,International Services', description: 'For certified software developers, data scientists, and infrastructure engineers.', image: '/visa/it visa.jpg' },
+
                 ]
             }
         ]

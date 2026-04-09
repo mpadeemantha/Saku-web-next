@@ -25,8 +25,8 @@ const courseData = {
         icon: Mic,
         description: 'Focus purely on conversational Japanese. Perfect for travelers, business professionals, or anyone who wants to confidently speak and understand everyday Japanese.',
         items: [
-            { id: 'everyday', title: 'Everyday Conversation', description: 'Learn highly practical phrases, active listening, and sentence structures necessary for thriving in daily social situations in Japan.', image: '/consult.webp' },
-            { id: 'business', title: 'Business & Keigo', description: 'Master formal honorific Japanese (Keigo) that is absolutely essential for succeeding in Japanese corporate and customer service environments.', image: '/consult.webp' }
+            { id: 'spoken-course', title: 'Japanese Spoken Course', description: 'Our flagship conversational program designed to take you from basic greetings to fluent daily interactions including active listening and sentence structures.', image: '/consult.webp' },
+
         ]
     }
 };
@@ -38,7 +38,7 @@ export default function CoursesPage() {
     return (
         <main className="min-h-screen relative overflow-x-hidden bg-white">
             <Navbar />
-            
+
             {/* Hero Section */}
             <section className="relative pt-24 pb-16 lg:pt-48 lg:pb-32 bg-saku-dark text-white overflow-hidden">
                 <div className="absolute inset-0 z-0 opacity-20">
@@ -55,7 +55,7 @@ export default function CoursesPage() {
                             <div className="h-[1px] w-8 sm:w-12 bg-saku-red"></div>
                         </div>
                         <h1 className="font-display text-3xl sm:text-4xl md:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
-                            Master Japanese.<br/>
+                            Master Japanese.<br />
                             <span className="text-gray-400">Unlock your future.</span>
                         </h1>
                         <p className="text-lg sm:text-xl text-gray-300 font-sans leading-relaxed mb-8">
@@ -68,17 +68,17 @@ export default function CoursesPage() {
             {/* Course Content Section */}
             <section className="py-16 md:py-24 bg-white min-h-[600px]">
                 <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
-                    
+
                     {/* Tab Switcher */}
                     <div className="flex flex-col items-center mb-16">
                         <div className="inline-flex bg-gray-50 border border-gray-200 p-1.5 w-full sm:w-auto max-w-md rounded-none shadow-sm">
-                            <button 
+                            <button
                                 onClick={() => setActiveTab('jlpt')}
                                 className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'jlpt' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
                             >
                                 <BookOpen size={16} /> <span className="sm:inline">JLPT</span>
                             </button>
-                            <button 
+                            <button
                                 onClick={() => setActiveTab('spoken')}
                                 className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'spoken' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
                             >
@@ -109,11 +109,11 @@ export default function CoursesPage() {
                                     {activeData.items.map((item: { id: string; title: string; description: string; image: string }, idx: number) => (
                                         <div key={idx} className="bg-white border border-gray-100 shadow-sm flex flex-col group hover:shadow-xl transition-all h-full max-w-md mx-auto w-full">
                                             <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
-                                                <Image 
-                                                    src={item.image} 
-                                                    alt={item.title} 
-                                                    fill 
-                                                    className="object-cover transition-transform duration-700 group-hover:scale-105" 
+                                                <Image
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    fill
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
