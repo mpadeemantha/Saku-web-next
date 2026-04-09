@@ -34,7 +34,7 @@ const services = [
         icon: <Users size={24} className="text-white" />,
         image: "/consult.webp",
         gridClass: "md:col-span-1",
-        href: "/contact",
+        href: "/visa",
     },
 ];
 

@@ -37,7 +37,7 @@ const Navbar = () => {
             >
                 <div className="container mx-auto px-6 flex justify-between items-center">
                     <Link href="/" className="flex items-center gap-2 z-50">
-                        <div className="relative h-12 w-auto aspect-[3/1]">
+                        <div className="relative h-12 lg:h-16 w-auto aspect-[3/1]">
                             <Image
                                 src={scrolled ? "/sakulogoB.png" : "/sakulogoW.png"}
                                 alt="Saku Logo"

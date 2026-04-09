@@ -56,7 +56,7 @@ const StudentGallery = () => {
         if (carouselRef.current) {
             setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
         }
-        
+
         const handleResize = () => {
             if (carouselRef.current) {
                 setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
@@ -87,11 +87,20 @@ const StudentGallery = () => {
             {/* Carousel Section */}
             <div className="relative group" ref={carouselRef}>
                 {/* Horizontal Gradient Gradients */}
-                <div className="absolute inset-y-0 left-0 w-24 md:w-48 bg-gradient-to-r from-[#fbfbfb] to-transparent z-10 pointer-events-none" />
-                <div className="absolute inset-y-0 right-0 w-24 md:w-48 bg-gradient-to-l from-[#fbfbfb] to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 left-0 w-24 md:w-48  z-10 pointer-events-none" />
+                <div className="absolute inset-y-0 right-0 w-24 md:w-48  z-10 pointer-events-none" />
 
                 <motion.div
                     className="flex cursor-grab active:cursor-grabbing pb-8 pl-[10vw]"
+                    animate={width > 0 ? { x: [0, -width] } : {}}
+                    transition={{
+                        x: {
+                            repeat: Infinity,
+                            repeatType: "loop",
+                            duration: 600,
+                            ease: "linear",
+                        },
+                    }}
                     drag="x"
                     dragConstraints={{ right: 0, left: -width }}
                     dragElastic={0.1}

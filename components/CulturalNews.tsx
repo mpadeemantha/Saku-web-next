@@ -10,14 +10,14 @@ const newsItems = [
         date: "Feb 15, 2024",
         category: "News",
         summary: "Learn authentic Japanese culinary skills while improving your spoken Japanese.",
-        image: "https://images.unsplash.com/photo-1580442151529-343f2f5e0e27?q=80&w=1000",
+        image: "/student/ff-saku.jpg",
     },
     {
         title: "JLPT N5 Enrollment Open",
         date: "Feb 10, 2024",
         category: "Enrollment",
         summary: "Limited seats available for the upcoming N5 intensive batch starting next month.",
-        image: "https://images.unsplash.com/photo-1544652478-665caee0df7a?q=80&w=1000",
+        image: "/student/main.jpg",
     },
 ];
 

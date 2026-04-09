@@ -28,17 +28,17 @@ const Footer = () => {
 
                     <div className="lg:col-span-1">
                         <Link href="/">
-                            <div className="relative h-16 w-32 mb-6">
-                                <Image 
-                                    src="/sakulogoW.png" 
-                                    alt="Saku Logo" 
-                                    fill 
-                                    className="object-contain" 
+                            <div className="relative h-24 w-48 mb-1">
+                                <Image
+                                    src="/sakulogoW.png"
+                                    alt="Saku Logo"
+                                    fill
+                                    className="object-contain"
                                 />
                             </div>
                         </Link>
-                        <p className="text-gray-400 text-base md:text-lg leading-relaxed mb-8 font-sans">
-                            Founded in 1994, Saku Japanese Language School is the pioneer in Japanese language education in Sri Lanka, bridging cultures and creating global careers.
+                        <p className="text-gray-400 text-base md:text-s leading-relaxed mb-8 font-sans">
+                            At Saku Japanese Language School, we are dedicated to helping Sri Lankan students and professionals achieve their dreams of studying, working, and living in Japan.
                         </p>
                         <div className="flex gap-4">
                             <Instagram size={20} className="text-gray-500 hover:text-saku-red cursor-pointer transition-colors" />
@@ -73,7 +73,7 @@ const Footer = () => {
 
                     <div>
                         <h4 className="font-bold text-white uppercase tracking-widest text-sm mb-8">Newsletter</h4>
-                        <p className="text-gray-400 text-base md:text-lg mb-4">Stay updated with the latest news and batch starting dates.</p>
+                        <p className="text-gray-400 text-base md:text-s mb-4">Stay updated with the latest news and batch starting dates.</p>
                         <div className="flex shadow-lg">
                             <input
                                 type="email"
@@ -89,10 +89,10 @@ const Footer = () => {
                 </div>
 
                 <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-gray-500">
-                    <p className="text-base md:text-lg uppercase font-bold tracking-widest">
+                    <p className="text-xs md:text-xs uppercase  tracking-widest">
                         © 2024 Saku Japanese Language School. All Rights Reserved.
                     </p>
-                    <div className="flex gap-8 text-sm uppercase font-bold tracking-widest">
+                    <div className="flex gap-8 text-xs uppercase  tracking-widest">
                         <span className="hover:text-saku-red cursor-pointer transition-colors">Privacy Policy</span>
                         <span className="hover:text-saku-red cursor-pointer transition-colors">Terms of Service</span>
                     </div>
