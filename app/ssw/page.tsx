@@ -110,7 +110,7 @@ export default function SSWPage() {
                             {/* Sub Categories & Items Linear List */}
                             <div className="flex flex-col gap-16 sm:gap-24">
                                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                                    {activeData.items.map((item: any, idx: number) => (
+                                    {activeData.items.map((item: { id: string; title: string; description: string; image: string }, idx: number) => (
                                         <div key={idx} className="bg-white border border-gray-100 shadow-sm flex flex-col group hover:shadow-xl transition-all h-full">
                                             <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
                                                 <Image 

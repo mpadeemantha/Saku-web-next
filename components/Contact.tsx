@@ -25,8 +25,8 @@ const Contact = () => {
                                 <div>
                                     <h4 className="font-bold text-lg mb-1">Our Location</h4>
                                     <p className="text-gray-400 font-sans leading-relaxed">
-                                        123 Sakura Heights, <br />
-                                        Colombo 07, Sri Lanka
+                                        07 Turnour Rd, <br />
+                                        Colombo 00800, Sri Lanka
                                     </p>
                                 </div>
                             </div>
@@ -37,8 +37,8 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-lg mb-1">Contact Numbers</h4>
-                                    <p className="text-gray-400 font-sans">+94 77 123 4567</p>
-                                    <p className="text-gray-400 font-sans">+94 11 987 6543</p>
+                                    <p className="text-gray-400 font-sans">+94 76 262 8498</p>
+                                    <p className="text-gray-400 font-sans">+94 74 013 2946</p>
                                 </div>
                             </div>
 
@@ -48,7 +48,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-lg mb-1">Email Queries</h4>
-                                    <p className="text-gray-400 font-sans">hello@sakujls.lk</p>
+                                    <p className="text-gray-400 font-sans">info@sakujls.lk</p>
                                 </div>
                             </div>
                         </div>

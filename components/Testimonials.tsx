@@ -106,7 +106,7 @@ const Testimonials = () => {
                                     ))}
                                 </div>
                                 <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                                    "{t.text}"
+                                    &quot;{t.text}&quot;
                                 </p>
                                 <div className="flex items-center gap-4 border-t border-gray-50 pt-6">
                                     <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md">

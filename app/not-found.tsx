@@ -71,7 +71,7 @@ export default function NotFound() {
                         </h2>
                         
                         <p className="text-gray-500 max-w-md mx-auto mb-10 text-lg leading-relaxed">
-                            The page you are looking for might have been moved, deleted, or possibly never existed. Let's get you back on track.
+                            The page you are looking for might have been moved, deleted, or possibly never existed. Let&apos;s get you back on track.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

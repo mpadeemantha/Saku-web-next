@@ -51,11 +51,11 @@ const Footer = () => {
                     <div>
                         <h4 className="font-bold text-white uppercase tracking-widest text-sm mb-8">Navigation</h4>
                         <ul className="space-y-4 text-sm text-gray-400 font-medium">
-                            <li className="hover:text-saku-red transition-colors cursor-pointer"><a href="/">Home</a></li>
-                            <li className="hover:text-saku-red transition-colors cursor-pointer"><a href="#about">About Saku</a></li>
-                            <li className="hover:text-saku-red transition-colors cursor-pointer"><a href="#courses">Courses</a></li>
-                            <li className="hover:text-saku-red transition-colors cursor-pointer"><a href="#ssw">SSW Programs</a></li>
-                            <li className="hover:text-saku-red transition-colors cursor-pointer"><a href="#contact">Contact</a></li>
+                            <li className="hover:text-saku-red transition-colors cursor-pointer"><Link href="/">Home</Link></li>
+                            <li className="hover:text-saku-red transition-colors cursor-pointer"><Link href="/#about">About Saku</Link></li>
+                            <li className="hover:text-saku-red transition-colors cursor-pointer"><Link href="/#courses">Courses</Link></li>
+                            <li className="hover:text-saku-red transition-colors cursor-pointer"><Link href="/#ssw">SSW Programs</Link></li>
+                            <li className="hover:text-saku-red transition-colors cursor-pointer"><Link href="/#contact">Contact</Link></li>
                         </ul>
 
                     </div>

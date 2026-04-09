@@ -19,20 +19,11 @@ const visaData = {
                 title: 'Scholarship Programs',
                 description: 'Fully or partially funded opportunities for outstanding students.',
                 items: [
-                    { title: 'Caregiver Scholarship', description: 'Full tuition coverage plus living allowance while training as a certified caregiver in Japan.', image: '/class.webp' },
-                    { title: 'University Recommended', description: 'MEXT scholarships and university-specific grants for talented international students.', image: '/visa.png' }
+                    { title: 'Scholarship', description: 'Full tuition coverage plus living allowance while training as a certified caregiver in Japan.', image: '/class.webp' },
+
                 ]
             },
-            {
-                id: 'selfFunded',
-                title: 'Self-Funded Study',
-                description: 'Standard application for language schools and university enrollment.',
-                items: [
-                    { title: 'Language School Course', description: 'Standard 1-2 year Japanese language programs leading to N2/N1 proficiency.', image: '/class.webp' },
-                    { title: 'Vocational College', description: 'Specialized 2-year technical degree programs in IT, Anime, or Business.', image: '/consult.webp' },
-                    { title: 'University Undergraduate', description: '4-year bachelor degrees in Japanese universities.', image: '/class.webp' }
-                ]
-            }
+
         ]
     },
     work: {
@@ -149,7 +140,7 @@ export default function VisaPage() {
 
                             {/* Sub Categories & Items Linear List */}
                             <div className="flex flex-col gap-16 sm:gap-24">
-                                {activeData.subCategories.map((sub: any) => (
+                                {activeData.subCategories.map((sub: { id: string; title: string; description: string; items: { title: string; description: string; image: string }[] }) => (
                                     <div key={sub.id}>
                                         <div className="mb-8 border-l-4 border-saku-red pl-4 sm:pl-6">
                                             <h3 className="font-display text-2xl sm:text-3xl font-bold text-saku-dark mb-2">{sub.title}</h3>
@@ -157,7 +148,7 @@ export default function VisaPage() {
                                         </div>
 
                                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                                            {sub.items.map((item: any, idx: number) => (
+                                            {sub.items.map((item: { title: string; description: string; image: string }, idx: number) => (
                                                 <div key={idx} className="bg-white border border-gray-100 shadow-sm flex flex-col group hover:shadow-xl transition-all h-full">
                                                     <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
                                                         <Image

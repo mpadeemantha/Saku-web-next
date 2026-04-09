@@ -3,11 +3,19 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const JapaneseOverlay = () => {
-    const [petals, setPetals] = useState<any[]>([]);
+interface Petal {
+    id: number;
+    left: string;
+    top: string;
+    delay: number;
+    duration: number;
+    size: number;
+}
 
+const JapaneseOverlay = () => {
+    const [petals, setPetals] = useState<Petal[]>([]);
+    
     useEffect(() => {
-        // Create random petals
         const newPetals = Array.from({ length: 15 }).map((_, i) => ({
             id: i,
             left: `${Math.random() * 100}%`,
@@ -16,6 +24,7 @@ const JapaneseOverlay = () => {
             duration: 15 + Math.random() * 20,
             size: 5 + Math.random() * 10,
         }));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setPetals(newPetals);
     }, []);
 
