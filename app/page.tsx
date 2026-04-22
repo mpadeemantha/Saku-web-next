@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Stats from "@/components/Stats";
+
 import Services from "@/components/Services";
 import Testimonials from "@/components/Testimonials";
 import CulturalNews from "@/components/CulturalNews";
@@ -22,17 +22,10 @@ export default function Home() {
         <About />
       </ScrollReveal>
 
-      <ScrollReveal delay={0.1}>
-        <Stats />
-      </ScrollReveal>
-
       <ScrollReveal>
         <Services />
       </ScrollReveal>
 
-      <ScrollReveal>
-        <UpcomingClasses />
-      </ScrollReveal>
 
       <ScrollReveal>
         <Testimonials />

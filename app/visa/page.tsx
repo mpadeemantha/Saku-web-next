@@ -33,8 +33,8 @@ const visaData = {
         subCategories: [
             {
                 id: 'ssw',
-                title: 'SSW  (Specified Skilled Worker)',
-                description: 'For skilled workers passing technical and language exams in specific industries.',
+                title: 'SSW Visa',
+                description: 'Specified Skilled Worker (SSW). For skilled workers passing technical and language exams in specific industries.',
                 items: [
                     { title: 'Caregiver', description: 'Work in specialized nursing facilities, providing essential care and support for the elderly in Japan.', image: '/visa/caregiver.webp' },
                     { title: 'Food Service', description: 'Opportunities in the dynamic Japanese restaurant, catering, and food preparation sectors.', image: '/visa/food service.webp' },
@@ -43,15 +43,15 @@ const visaData = {
                     { title: 'Food & Beverage Manufacturing', description: 'Work in food production plants, processing facilities, and quality control lines.', image: '/visa/food and bev.webp' },
                     { title: 'Airport Ground Handling', description: 'Support airport operations through baggage handling, cargo management, and ground services.', image: '/visa/airport g.webp' },
                     { title: 'Accommodation', description: 'Provide hospitality and management services in Japanese hotels, traditional inns, and resorts.', image: '/visa/acommodation.webp' },
-                    { title: 'Automobile Transport', description: 'Professional driving and logistics operations for moving goods and people across Japan.', image: '/visa/transport.webp' },
+                    { title: 'Transportation', description: 'Professional driving and logistics operations for moving goods and people across Japan.', image: '/visa/transport.webp' },
                     { title: 'Construction', description: 'Skilled roles in civil engineering, architecture, and specialized construction machinery operation.', image: '/visa/construct.webp' },
                     { title: 'Automobile Mechanic', description: 'Specialized maintenance and repair services for vehicles in certified Japanese workshops.', image: '/visa/automobile m.webp' }
                 ]
             },
             {
                 id: 'titp',
-                title: 'Technical Intern Training (TITP)',
-                description: 'Learn Japanese advanced skills through practical employment.',
+                title: 'Trainees Visa',
+                description: 'Technical Intern Training (TITP). Learn Japanese advanced skills through practical employment.',
                 items: [
 
                     { title: 'Construction Intern', description: 'Learn advanced Japanese civil engineering and building techniques.', image: '/visa/construct tr.jpg' }
@@ -59,7 +59,7 @@ const visaData = {
             },
             {
                 id: 'highlySkilled',
-                title: 'Engineer/Specialist in Humanities/International Services',
+                title: 'Engineer, Humanities, International',
                 description: 'For IT engineers, researchers, and specialized degree-holding professionals.',
                 items: [
                     { title: 'Engineer,Humanities,International Services', description: 'For certified software developers, data scientists, and infrastructure engineers.', image: '/visa/it visa.jpg' },
@@ -71,8 +71,16 @@ const visaData = {
 };
 
 export default function VisaPage() {
-    const [activeTab, setActiveTab] = useState<'student' | 'work'>('student');
-    const activeData = visaData[activeTab];
+    const [activeTab, setActiveTab] = useState<'student' | 'work' | null>(null);
+    const [activeSubTab, setActiveSubTab] = useState<string | null>(null);
+
+    const handleTabChange = (tab: 'student' | 'work') => {
+        setActiveTab(tab);
+        setActiveSubTab(null); // Reset sub-tab when main tab changes
+    };
+
+    const activeData = activeTab ? visaData[activeTab] : null;
+    const currentSubCategory = (activeTab && activeSubTab) ? visaData[activeTab].subCategories.find(sub => sub.id === activeSubTab) : null;
 
     return (
         <main className="min-h-screen relative overflow-x-hidden bg-white">
@@ -94,11 +102,10 @@ export default function VisaPage() {
                             <div className="h-[1px] w-8 sm:w-12 bg-saku-red"></div>
                         </div>
                         <h1 className="font-display text-3xl sm:text-4xl md:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
-                            Your Path to Japan.<br />
-                            <span className="text-gray-400">Simplified.</span>
+                            JAPAN VISA TYPES<br />
                         </h1>
                         <p className="text-lg sm:text-xl text-gray-300 font-sans leading-relaxed mb-8">
-                            Select a visa category below to explore specific programs, scholarships, and career opportunities waiting for you in Japan.
+                            Each visa has specific requirements, and the application process involves securing a job offer, obtaining a Certificate of Eligibility (COE), and applying for the visa at a Japanese embassy or consulate.
                         </p>
                     </div>
                 </div>
@@ -108,81 +115,159 @@ export default function VisaPage() {
             <section className="py-16 md:py-24 bg-white min-h-[600px]">
                 <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
 
-                    {/* Tab Switcher */}
-                    <div className="flex flex-col items-center mb-16">
-                        <div className="inline-flex bg-gray-50 border border-gray-200 p-1.5 w-full sm:w-auto max-w-md rounded-none shadow-sm">
-                            <button
-                                onClick={() => setActiveTab('student')}
-                                className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'student' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
-                            >
-                                <GraduationCap size={16} /> <span className="sm:inline">STUDENT VISA</span>
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('work')}
-                                className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'work' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
-                            >
-                                <Briefcase size={16} /> <span className="sm:inline">WORK VISA</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={activeTab}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.3 }}
+                    {/* Main Category Cards (Neobrutalism Style) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
+                        <button
+                            onClick={() => handleTabChange('work')}
+                            className={`relative flex items-center gap-6 p-8 rounded-[2rem] transition-all duration-500 border-2 text-left group overflow-hidden ${
+                                activeTab === 'work' 
+                                    ? 'border-saku-dark bg-white shadow-[10px_10px_0px_#000000] translate-x-[-4px] translate-y-[-4px]' 
+                                    : 'border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200'
+                            }`}
                         >
-                            {/* Main Category Header */}
-                            <div className="text-center mb-4 sm:mb-8">
-                                <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-saku-dark mb-4">{activeData.title}</h2>
-                                <p className="text-gray-600 sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                                    {activeData.description}
+                            {activeTab === 'work' && (
+                                <motion.div 
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute top-6 right-6"
+                                >
+                                    <CheckCircle2 className="text-saku-red" size={24} />
+                                </motion.div>
+                            )}
+                            <div className={`w-20 h-20 flex items-center justify-center rounded-2xl transition-all duration-500 ${
+                                activeTab === 'work' 
+                                    ? 'bg-saku-red text-white rotate-3 shadow-lg shadow-saku-red/30' 
+                                    : 'bg-black text-white group-hover:bg-saku-red'
+                            }`}>
+                                <Briefcase size={36} />
+                            </div>
+                            <div>
+                                <h3 className={`font-display text-2xl font-bold mb-1 ${activeTab === 'work' ? 'text-saku-dark' : 'text-black'}`}>
+                                    Work Visa
+                                </h3>
+                                <p className={`text-xs font-bold tracking-widest uppercase ${activeTab === 'work' ? 'text-saku-red' : 'text-slate-400'}`}>
+                                    Skilled Employment
                                 </p>
                             </div>
+                        </button>
 
-                            {/* Sub Categories & Items Linear List */}
-                            <div className="flex flex-col gap-16 sm:gap-24">
-                                {activeData.subCategories.map((sub: { id: string; title: string; description: string; items: { title: string; description: string; image: string }[] }) => (
-                                    <div key={sub.id}>
-                                        <div className="mb-8 border-l-4 border-saku-red pl-4 sm:pl-6">
-                                            <h3 className="font-display text-2xl sm:text-3xl font-bold text-saku-dark mb-2">{sub.title}</h3>
-                                            <p className="text-gray-600 text-base md:text-lg sm:text-base">{sub.description}</p>
-                                        </div>
-
-                                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                                            {sub.items.map((item: { title: string; description: string; image: string }, idx: number) => (
-                                                <div key={idx} className="bg-white border border-gray-100 shadow-sm flex flex-col group hover:shadow-xl transition-all h-full">
-                                                    <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-gray-100">
-                                                        <Image
-                                                            src={item.image}
-                                                            alt={item.title}
-                                                            fill
-                                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                        />
-                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                                                        <h3 className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 font-display text-lg sm:text-xl leading-tight font-bold text-white z-10">{item.title}</h3>
-                                                    </div>
-                                                    <div className="p-6 sm:p-8 flex flex-col flex-grow bg-white">
-                                                        <p className="text-gray-600 leading-relaxed mb-6 sm:mb-8 flex-grow text-base md:text-lg">
-                                                            {item.description}
-                                                        </p>
-                                                        <Link href="/contact" className="w-full bg-gray-50 border border-gray-200 text-saku-dark text-center py-3 sm:py-4 font-bold tracking-widest text-sm sm:text-xs hover:bg-saku-red hover:text-white hover:border-saku-red transition-all mt-auto active:scale-[0.98]">
-                                                            APPLY NOW
-                                                        </Link>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
+                        <button
+                            onClick={() => handleTabChange('student')}
+                            className={`relative flex items-center gap-6 p-8 rounded-[2rem] transition-all duration-500 border-2 text-left group overflow-hidden ${
+                                activeTab === 'student' 
+                                    ? 'border-saku-dark bg-white shadow-[10px_10px_0px_#000000] translate-x-[-4px] translate-y-[-4px]' 
+                                    : 'border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200'
+                            }`}
+                        >
+                            {activeTab === 'student' && (
+                                <motion.div 
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute top-6 right-6"
+                                >
+                                    <CheckCircle2 className="text-saku-red" size={24} />
+                                </motion.div>
+                            )}
+                            <div className={`w-20 h-20 flex items-center justify-center rounded-2xl transition-all duration-500 ${
+                                activeTab === 'student' 
+                                    ? 'bg-saku-red text-white rotate-3 shadow-lg shadow-saku-red/30' 
+                                    : 'bg-black text-white group-hover:bg-saku-red'
+                            }`}>
+                                <GraduationCap size={36} />
                             </div>
-                        </motion.div>
+                            <div>
+                                <h3 className={`font-display text-2xl font-bold mb-1 ${activeTab === 'student' ? 'text-saku-dark' : 'text-black'}`}>
+                                    Student Visa
+                                </h3>
+                                <p className={`text-xs font-bold tracking-widest uppercase ${activeTab === 'student' ? 'text-saku-red' : 'text-slate-400'}`}>
+                                    Higher Education
+                                </p>
+                            </div>
+                        </button>
+                    </div>
+
+                    {/* Sub Category Pills */}
+                    {activeTab && activeData && (
+                        <div className="flex flex-wrap justify-center gap-3 mb-16">
+                            {activeData.subCategories.map((sub) => (
+                                <button
+                                    key={sub.id}
+                                    onClick={() => setActiveSubTab(sub.id)}
+                                    className={`px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 ${activeSubTab === sub.id
+                                        ? 'bg-saku-dark text-white shadow-lg'
+                                        : 'bg-gray-100 text-black hover:bg-gray-200 hover:text-saku-dark'
+                                        }`}
+                                >
+                                    {sub.title}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    <AnimatePresence mode="wait">
+                        {currentSubCategory ? (
+                            <motion.div
+                                key={`${activeTab}-${activeSubTab}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {/* Current Sub Category Info */}
+                                <div className="mb-12 text-center max-w-3xl mx-auto">
+                                    <h3 className="font-display text-3xl sm:text-4xl font-bold text-saku-dark mb-4">{currentSubCategory.title}</h3>
+                                    <p className="text-gray-600 text-lg leading-relaxed">{currentSubCategory.description}</p>
+                                </div>
+
+                                {/* Items Grid */}
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                                    {currentSubCategory.items.map((item: { title: string; description: string; image: string }, idx: number) => (
+                                        <div key={idx} className="bg-white border border-gray-100 shadow-sm flex flex-col group hover:shadow-xl transition-all h-full">
+                                            <div className="relative h-64 w-full overflow-hidden">
+                                                <Image
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    fill
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90"></div>
+                                                <h3 className="absolute bottom-6 left-6 right-6 font-display text-xl font-bold text-white z-10 leading-tight">
+                                                    {item.title}
+                                                </h3>
+                                            </div>
+                                            <div className="p-8 flex flex-col flex-grow bg-white">
+                                                <p className="text-slate-500 leading-relaxed mb-8 flex-grow text-base md:text-lg font-medium">
+                                                    {item.description}
+                                                </p>
+                                                <div className="mt-auto flex flex-col gap-3">
+                                                    <Link href={`/visa/details/${item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="w-full bg-slate-50 border border-slate-200 text-saku-dark text-center py-3.5 font-bold tracking-widest text-xs hover:border-saku-red hover:text-saku-red transition-all uppercase">
+                                                        VIEW REQUIREMENTS
+                                                    </Link>
+                                                    <Link href="/contact" className="w-full bg-saku-red text-white text-center py-3.5 font-bold tracking-widest text-xs hover:bg-saku-dark transition-all active:scale-[0.98] uppercase">
+                                                        ENROLL NOW
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-center py-20 bg-gray-50 border-2 border-dashed border-gray-200"
+                            >
+                                <p className="text-gray-400 font-medium text-lg">
+                                    {!activeTab ? "Please select a visa category above to get started." : "Great! Now select a specific program to see details."}
+                                </p>
+                            </motion.div>
+                        )}
                     </AnimatePresence>
                 </div>
             </section>
+
 
             {/* Quick CTA */}
             <section className="py-16 md:py-20 bg-saku-red text-white">

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { BookOpen, Mic, Globe, ArrowLeft, ArrowRight } from "lucide-react";
+import { BookOpen, Mic, Globe, ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -69,22 +69,71 @@ export default function CoursesPage() {
             <section className="py-16 md:py-24 bg-white min-h-[600px]">
                 <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
 
-                    {/* Tab Switcher */}
-                    <div className="flex flex-col items-center mb-16">
-                        <div className="inline-flex bg-gray-50 border border-gray-200 p-1.5 w-full sm:w-auto max-w-md rounded-none shadow-sm">
-                            <button
-                                onClick={() => setActiveTab('jlpt')}
-                                className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'jlpt' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
-                            >
-                                <BookOpen size={16} /> <span className="sm:inline">JLPT</span>
-                            </button>
-                            <button
-                                onClick={() => setActiveTab('spoken')}
-                                className={`flex-1 sm:flex-none sm:w-48 px-4 py-4 font-bold tracking-widest text-sm sm:text-xs uppercase transition-all duration-300 flex justify-center items-center gap-2 ${activeTab === 'spoken' ? 'bg-saku-dark text-white shadow-md' : 'text-gray-500 hover:text-saku-dark hover:bg-white'}`}
-                            >
-                                <Mic size={16} /> <span className="sm:inline">SPOKEN</span>
-                            </button>
-                        </div>
+                    {/* Main Category Cards (Neobrutalism Style) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto mb-20">
+                        <button
+                            onClick={() => setActiveTab('jlpt')}
+                            className={`relative flex items-center gap-6 p-8 rounded-[2rem] transition-all duration-500 border-2 text-left group overflow-hidden ${activeTab === 'jlpt'
+                                    ? 'border-saku-dark bg-white shadow-[10px_10px_0px_#000000] translate-x-[-4px] translate-y-[-4px]'
+                                    : 'border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200'
+                                }`}
+                        >
+                            {activeTab === 'jlpt' && (
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute top-6 right-6"
+                                >
+                                    <CheckCircle2 className="text-saku-red" size={24} />
+                                </motion.div>
+                            )}
+                            <div className={`w-20 h-20 flex items-center justify-center rounded-2xl transition-all duration-500 ${activeTab === 'jlpt'
+                                    ? 'bg-saku-red text-white rotate-3 shadow-lg shadow-saku-red/30'
+                                    : 'bg-black text-white group-hover:bg-saku-red'
+                                }`}>
+                                <BookOpen size={36} />
+                            </div>
+                            <div>
+                                <h3 className={`font-display text-2xl font-bold mb-1 ${activeTab === 'jlpt' ? 'text-saku-dark' : 'text-black'}`}>
+                                    JLPT/NAT-TEST
+                                </h3>
+                                <p className={`text-xs font-bold tracking-widest uppercase ${activeTab === 'jlpt' ? 'text-saku-red' : 'text-slate-400'}`}>
+                                    Exam Success
+                                </p>
+                            </div>
+                        </button>
+
+                        <button
+                            onClick={() => setActiveTab('spoken')}
+                            className={`relative flex items-center gap-6 p-8 rounded-[2rem] transition-all duration-500 border-2 text-left group overflow-hidden ${activeTab === 'spoken'
+                                    ? 'border-saku-dark bg-white shadow-[10px_10px_0px_#000000] translate-x-[-4px] translate-y-[-4px]'
+                                    : 'border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200'
+                                }`}
+                        >
+                            {activeTab === 'spoken' && (
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute top-6 right-6"
+                                >
+                                    <CheckCircle2 className="text-saku-red" size={24} />
+                                </motion.div>
+                            )}
+                            <div className={`w-20 h-20 flex items-center justify-center rounded-2xl transition-all duration-500 ${activeTab === 'spoken'
+                                    ? 'bg-saku-red text-white rotate-3 shadow-lg shadow-saku-red/30'
+                                    : 'bg-black text-white group-hover:bg-saku-red'
+                                }`}>
+                                <Mic size={36} />
+                            </div>
+                            <div>
+                                <h3 className={`font-display text-2xl font-bold mb-1 ${activeTab === 'spoken' ? 'text-saku-dark' : 'text-black'}`}>
+                                    Spoken Japanese
+                                </h3>
+                                <p className={`text-xs font-bold tracking-widest uppercase ${activeTab === 'spoken' ? 'text-saku-red' : 'text-slate-400'}`}>
+                                    Native Fluency
+                                </p>
+                            </div>
+                        </button>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -96,8 +145,12 @@ export default function CoursesPage() {
                             transition={{ duration: 0.3 }}
                         >
                             {/* Main Category Header */}
-                            <div className="text-center mb-12 sm:mb-16">
-                                <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-saku-dark mb-4">{activeData.title}</h2>
+                            <div className="text-center mb-16 max-w-3xl mx-auto">
+                                <div className="flex items-center justify-center gap-3 mb-6">
+                                    <div className="w-10 h-1 bg-saku-red"></div>
+                                    <span className="text-saku-red font-bold tracking-[0.2em] uppercase text-xs">Professional language school</span>
+                                </div>
+                                <h2 className="font-display text-3xl sm:text-4xl font-bold text-saku-dark mb-4 lowercase first-letter:uppercase">{activeData.title}</h2>
                                 <p className="text-gray-600 sm:text-lg max-w-2xl mx-auto leading-relaxed">
                                     {activeData.description}
                                 </p>

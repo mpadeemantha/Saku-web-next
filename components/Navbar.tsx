@@ -54,7 +54,7 @@ const Navbar = () => {
                             <a
                                 key={link.name}
                                 href={link.href}
-                                className={`text-xs  uppercase tracking-[0.2em] transition-colors ${scrolled ? "text-gray-500 hover:text-saku-red" : "text-white/80 hover:text-white"
+                                className={`text-xs  uppercase tracking-[0.2em] transition-colors ${scrolled ? "text-black hover:text-saku-red" : "text-white/80 hover:text-white"
                                     }`}
                             >
                                 {link.name}
