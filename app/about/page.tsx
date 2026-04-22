@@ -1,155 +1,266 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
 import Image from "next/image";
-import { CheckCircle2, Globe, Users, BookOpen, Star } from "lucide-react";
+import { CheckCircle2, Globe, Users, BookOpen, Star, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+
+const stats = [
+    { value: "10+", label: "Years of Experience" },
+    { value: "500+", label: "Students Placed" },
+    { value: "95%", label: "Visa Success Rate" },
+    { value: "3", label: "Japan Partner Schools" },
+];
+
+const features = [
+    {
+        icon: Users,
+        title: "Experienced Faculty",
+        desc: "Learn from native Japanese speakers and seasoned local educators with years of hands-on experience in Japan.",
+    },
+    {
+        icon: BookOpen,
+        title: "Proven Curriculum",
+        desc: "Structured courses designed to guarantee success in JLPT, NAT, and JFT examinations.",
+    },
+    {
+        icon: Globe,
+        title: "End-to-End Support",
+        desc: "From language training to visa processing and post-arrival assistance in Japan.",
+    },
+];
+
+const highlights = [
+    "Experienced visa consultants with a track record of successful applications.",
+    "Step-by-step guidance tailored to your individual needs.",
+    "Affordable service fees with a commitment to quality and reliability.",
+];
 
 export default function AboutPage() {
     return (
-        <main className="min-h-screen relative overflow-x-hidden bg-white">
+        <main className="min-h-screen bg-white overflow-x-hidden">
             <Navbar />
 
-            {/* Hero Section for About */}
-            <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-saku-dark text-white overflow-hidden">
-                <div className="absolute inset-0 z-0 opacity-20">
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-saku-dark"></div>
-                    <div className="w-full h-full bg-[url('/about.jpg')] bg-cover bg-center bg-no-repeat grayscale"></div>
+            {/* ── Hero ── */}
+            <section className="relative pt-24 pb-16 lg:pt-48 lg:pb-32 bg-saku-dark text-white overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <div className="w-full h-full bg-[url('/about.jpg')] bg-cover bg-center bg-no-repeat grayscale opacity-20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-saku-dark/40 to-saku-dark"></div>
                 </div>
-                <div className="container mx-auto px-6 relative z-10">
+                <div className="container mx-auto px-4 sm:px-6 relative z-10 flex flex-col items-center text-center">
                     <div className="max-w-3xl">
-                        <div className="flex items-center gap-4 mb-4">
-                            <span className="text-saku-red font-bold tracking-[0.3em] uppercase text-sm">About Us</span>
-                            <div className="h-[1px] w-12 bg-saku-red"></div>
+                        <div className="flex items-center justify-center gap-3 sm:gap-4 mb-4">
+                            <div className="h-[1px] w-8 sm:w-12 bg-saku-red"></div>
+                            <span className="text-saku-red text-overline">About Us</span>
+                            <div className="h-[1px] w-8 sm:w-12 bg-saku-red"></div>
                         </div>
-                        <h1 className="font-display text-3xl sm:text-4xl md:text-7xl font-bold mb-6 leading-tight">
-                            Who We Are<br />
+                        <h1 className="font-display text-hero font-bold mb-6 leading-tight">
+                            Who We Are
                         </h1>
-                        <p className="text-xl text-gray-300 font-sans leading-relaxed">
-                            At Saku Japanese Language School, we are dedicated to helping Sri Lankan students and professionals achieve their dreams of studying, working, and living in Japan. Our institution provides top-quality Japanese language education, visa assistance, and consulting services to ensure a smooth transition for students aspiring to move to Japan.
+                        <p className="text-body text-gray-300 leading-relaxed max-w-2xl mx-auto">
+                            At Saku Japanese Language School, we are dedicated to helping Sri Lankan students and professionals achieve their dreams of studying, working, and living in Japan.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <ScrollReveal>
-                <section className="py-24">
-                    <div className="container mx-auto px-6">
-                        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-                            <div className="lg:w-1/2 relative">
-                                <div className="relative aspect-[4/5] w-full max-w-md mx-auto">
-                                    <div className="absolute -top-6 -left-6 w-full h-full border-2 border-saku-red/20 z-0" />
-                                    <div className="relative z-10 w-full h-full overflow-hidden shadow-2xl">
-                                        <Image
-                                            src="/about.jpg"
-                                            alt="Saku Japanese Language School Heritage"
-                                            fill
-                                            className="object-cover transition-transform duration-700 hover:scale-105"
-                                        />
-                                    </div>
-                                    <div className="absolute -bottom-8 -right-8 glass p-8 shadow-xl hidden sm:block z-20 bg-white/90 backdrop-blur-md border border-gray-100">
-                                        <div className="flex flex-col items-center text-center">
-                                            <span className="font-display text-3xl sm:text-4xl font-bold text-saku-dark">10+</span>
-                                            <span className="text-sm font-bold uppercase tracking-widest text-gray-500 mt-1">Years of Legacy</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="lg:w-1/2">
-                                <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-saku-dark leading-tight">
-                                    Why Choose Saku?
-                                </h2>
-                                <p className="text-gray-600 text-lg leading-relaxed mb-6 font-sans">
-                                    Saku Japanese Language School pvt.Ltd | Trusted Experts in Japan Visa Services – Offering Comprehensive Assistance for SSW, Work, and Service Visas. With our in-depth knowledge of Japan’s immigration processes, personalized support, and commitment to excellence, we ensure a smooth and stress-free visa application experience for individuals and businesses.
-                                </p>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
-                                    {[
-                                        "Experienced visa consultants with a track record of successful applications.",
-                                        "Step-by-step guidance tailored to your individual needs.",
-                                        "Affordable service fees with a commitment to quality and reliability.",
-                                    ].map((item, index) => (
-                                        <div key={index} className="flex items-start gap-3">
-                                            <CheckCircle2 size={20} className="text-saku-red mt-1 flex-shrink-0" />
-                                            <span className="text-sm font-bold text-saku-dark/80 leading-snug">{item}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
+            {/* ── Stats Bar ── */}
+            <div className="bg-white border-b border-slate-100">
+                <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+                    <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-100">
+                        {stats.map((stat, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 12 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className="flex flex-col items-center text-center py-8 px-4"
+                            >
+                                <span className="font-display text-3xl sm:text-4xl font-black text-saku-dark">{stat.value}</span>
+                                <span className="text-label text-slate-400 mt-1">{stat.label}</span>
+                            </motion.div>
+                        ))}
                     </div>
-                </section>
-            </ScrollReveal>
+                </div>
+            </div>
 
-            <ScrollReveal>
-                <section className="py-24 bg-gray-50 border-y border-gray-100">
-                    <div className="container mx-auto px-6 text-center max-w-5xl">
-                        <div className="flex items-center justify-center gap-4 mb-4">
-                            <div className="h-[1px] w-8 bg-saku-red"></div>
-                            <span className="text-saku-red font-bold tracking-[0.3em] uppercase text-sm">Our Core</span>
-                            <div className="h-[1px] w-8 bg-saku-red"></div>
-                        </div>
-                        <h2 className="font-display text-3xl sm:text-4xl font-bold mb-16 text-saku-dark">Mission & Vision</h2>
+            {/* ── Who We Are — 2-col ── */}
+            <section className="py-16 md:py-24">
+                <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+                    <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
-                        <div className="grid md:grid-cols-2 gap-12 text-left">
-                            <div className="bg-white p-10 shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-saku-red rounded-sm group relative overflow-hidden">
-                                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none text-saku-dark">
-                                    <Globe size={180} />
+                        {/* Image */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -24 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="lg:w-5/12 flex-shrink-0"
+                        >
+                            <div className="relative aspect-[4/5] w-full max-w-sm mx-auto">
+                                <div className="absolute -top-4 -left-4 w-full h-full border-2 border-saku-red/20 rounded-2xl z-0" />
+                                <div className="relative z-10 w-full h-full overflow-hidden rounded-2xl shadow-2xl">
+                                    <Image
+                                        src="/about.jpg"
+                                        alt="Saku Japanese Language School"
+                                        fill
+                                        className="object-cover transition-transform duration-700 hover:scale-105"
+                                    />
                                 </div>
-                                <h3 className="font-display text-2xl sm:text-3xl font-bold text-saku-dark mb-6 relative z-10">Mission</h3>
-                                <p className="text-gray-600 text-lg leading-relaxed relative z-10">
-                                    Our mission is to empower Sri Lankan students with the language skills, cultural knowledge, and guidance they need to achieve their dreams of studying, working, and living in Japan. Through high-quality education, expert visa services, and personalized consulting, we strive to make the journey to Japan seamless, enriching, and successful for every student.
+                                {/* Badge */}
+                                <div className="absolute -bottom-6 -right-4 z-20 bg-white border-2 border-saku-dark rounded-2xl shadow-[6px_6px_0px_#000000] px-6 py-4">
+                                    <span className="font-display text-3xl font-black text-saku-dark block leading-none">10+</span>
+                                    <span className="text-label text-slate-500 mt-1 block">Years of Legacy</span>
+                                </div>
+                            </div>
+                        </motion.div>
+
+                        {/* Text */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 24 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="lg:w-7/12"
+                        >
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-8 h-1 bg-saku-red"></div>
+                                <span className="text-saku-red text-overline">Why Choose Saku</span>
+                            </div>
+                            <h2 className="font-display text-section-title font-bold text-saku-dark mb-6 leading-tight">
+                                Trusted experts in<br />Japan visa services
+                            </h2>
+                            <p className="text-body text-slate-500 leading-relaxed mb-8">
+                                Saku Japanese Language School Pvt. Ltd. offers comprehensive assistance for SSW, Work, and Service Visas. With our in-depth knowledge of Japan's immigration processes, personalized support, and commitment to excellence, we ensure a smooth and stress-free experience.
+                            </p>
+
+                            <div className="space-y-4 mb-10">
+                                {highlights.map((item, i) => (
+                                    <div key={i} className="flex items-start gap-3">
+                                        <div className="w-5 h-5 rounded-full bg-saku-red/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <CheckCircle2 size={14} className="text-saku-red" />
+                                        </div>
+                                        <span className="text-body text-slate-600">{item}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <Link href="/contact" className="inline-flex items-center gap-2 bg-saku-dark text-white px-8 py-3.5 rounded-xl font-bold text-label tracking-wider uppercase hover:bg-saku-red transition-all group">
+                                Get in Touch <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Mission & Vision ── */}
+            <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-100">
+                <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+                    <div className="text-center mb-12">
+                        <div className="flex items-center justify-center gap-3 mb-4">
+                            <div className="w-8 h-1 bg-saku-red"></div>
+                            <span className="text-saku-red text-overline">Our Core</span>
+                            <div className="w-8 h-1 bg-saku-red"></div>
+                        </div>
+                        <h2 className="font-display text-section-title font-bold text-saku-dark">Mission &amp; Vision</h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {/* Mission */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+                        >
+                            <div className="flex items-center gap-3 px-7 py-5 border-b border-slate-50 bg-slate-50/50">
+                                <div className="w-9 h-9 rounded-xl bg-saku-red flex items-center justify-center flex-shrink-0">
+                                    <Globe size={18} className="text-white" />
+                                </div>
+                                <h3 className="font-display text-heading font-bold text-saku-dark">Mission</h3>
+                            </div>
+                            <div className="px-7 py-6">
+                                <p className="text-body text-slate-500 leading-relaxed">
+                                    Our mission is to empower Sri Lankan students with the language skills, cultural knowledge, and guidance they need to achieve their dreams of studying, working, and living in Japan. Through high-quality education, expert visa services, and personalized consulting, we strive to make every journey to Japan seamless, enriching, and successful.
                                 </p>
                             </div>
-                            <div className="bg-white p-10 shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-saku-dark rounded-sm group relative overflow-hidden">
-                                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none text-saku-dark">
-                                    <Star size={180} />
+                        </motion.div>
+
+                        {/* Vision */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
+                        >
+                            <div className="flex items-center gap-3 px-7 py-5 border-b border-slate-50 bg-slate-50/50">
+                                <div className="w-9 h-9 rounded-xl bg-saku-dark flex items-center justify-center flex-shrink-0">
+                                    <Star size={18} className="text-white" />
                                 </div>
-                                <h3 className="font-display text-2xl sm:text-3xl font-bold text-saku-dark mb-6 relative z-10">Vision</h3>
-                                <p className="text-gray-600 text-lg leading-relaxed relative z-10">
+                                <h3 className="font-display text-heading font-bold text-saku-dark">Vision</h3>
+                            </div>
+                            <div className="px-7 py-6">
+                                <p className="text-body text-slate-500 leading-relaxed">
                                     Our vision is to become the leading Japanese language school and consulting center in Sri Lanka, renowned for fostering cross-cultural connections and transforming the lives of students. We aim to build a community where individuals are equipped to thrive in Japan, contributing to global understanding and collaboration.
                                 </p>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
-                </section>
-            </ScrollReveal>
+                </div>
+            </section>
 
-            <ScrollReveal>
-                <section className="py-24">
-                    <div className="container mx-auto px-6">
-                        <div className="text-center max-w-3xl mx-auto mb-16">
-                            <h2 className="font-display text-3xl sm:text-4xl font-bold text-saku-dark mb-6">Why Choose Saku?</h2>
-                            <p className="text-gray-600 text-lg">Our holistic approach ensures our students are well-prepared not just for exams, but for life in Japan.</p>
+            {/* ── Features ── */}
+            <section className="py-16 md:py-24">
+                <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
+                    <div className="text-center mb-12">
+                        <div className="flex items-center justify-center gap-3 mb-4">
+                            <div className="w-8 h-1 bg-saku-red"></div>
+                            <span className="text-saku-red text-overline">What Sets Us Apart</span>
+                            <div className="w-8 h-1 bg-saku-red"></div>
                         </div>
+                        <h2 className="font-display text-section-title font-bold text-saku-dark">Why Choose Saku?</h2>
+                        <p className="text-body text-slate-500 mt-3 max-w-xl mx-auto">Our holistic approach ensures our students are well-prepared not just for exams, but for life in Japan.</p>
+                    </div>
 
-                        <div className="grid md:grid-cols-3 gap-8">
-                            {[
-                                {
-                                    icon: <Users size={40} className="text-saku-red" />,
-                                    title: "Experienced Faculty",
-                                    desc: "Learn from native Japanese speakers and seasoned local educators with years of experience."
-                                },
-                                {
-                                    icon: <BookOpen size={40} className="text-saku-dark" />,
-                                    title: "Proven Curriculum",
-                                    desc: "Structured courses designed to guarantee success in JLPT, NAT, and JFT examinations."
-                                },
-                                {
-                                    icon: <Globe size={40} className="text-saku-red" />,
-                                    title: "End-to-End Support",
-                                    desc: "From Language training to visa processing and post-arrival assistance in Japan."
-                                }
-                            ].map((feature, i) => (
-                                <div key={i} className="flex flex-col items-center text-center p-8 bg-white border border-gray-100 hover:border-saku-red/30 transition-colors duration-300">
-                                    <div className="mb-6">{feature.icon}</div>
-                                    <h3 className="text-xl font-bold text-saku-dark mb-4">{feature.title}</h3>
-                                    <p className="text-gray-600">{feature.desc}</p>
+                    <div className="grid md:grid-cols-3 gap-6">
+                        {features.map((feature, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 16 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300"
+                            >
+                                <div className="p-7">
+                                    <div className="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center mb-5 group-hover:bg-saku-red group-hover:border-saku-red transition-all duration-300">
+                                        <feature.icon size={22} className="text-saku-dark group-hover:text-white transition-colors duration-300" />
+                                    </div>
+                                    <h3 className="font-display text-subheading font-bold text-saku-dark mb-3">{feature.title}</h3>
+                                    <p className="text-body text-slate-500 leading-relaxed">{feature.desc}</p>
                                 </div>
-                            ))}
-                        </div>
+                            </motion.div>
+                        ))}
                     </div>
-                </section>
-            </ScrollReveal>
+                </div>
+            </section>
+
+            {/* ── CTA ── */}
+            <section className="py-16 md:py-20 bg-saku-red text-white">
+                <div className="container mx-auto px-4 sm:px-6 text-center">
+                    <h2 className="font-display text-section-title font-bold mb-4 leading-tight">Ready to start your Japan journey?</h2>
+                    <p className="text-body text-white/85 max-w-2xl mx-auto mb-8">
+                        Our expert counselors are here to guide you from language training through to a successful visa application.
+                    </p>
+                    <Link href="/contact" className="inline-block bg-white text-saku-red px-10 py-4 font-bold tracking-widest text-label uppercase hover:bg-saku-dark hover:text-white transition-all active:scale-[0.98]">
+                        BOOK A FREE CONSULTATION
+                    </Link>
+                </div>
+            </section>
 
             <Footer />
         </main>

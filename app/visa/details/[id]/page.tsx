@@ -3,15 +3,15 @@
 import React, { use } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, CheckCircle2, Globe, FileText, User, BookOpen, Heart, Briefcase, Navigation, Languages, Info, ArrowRight, Quote } from "lucide-react";
+import { ArrowLeft, CheckCircle2, FileText, User, BookOpen, Heart, Briefcase, Navigation, Languages, Info, Globe, ArrowRight, Clock, TrendingUp, LayersIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-// Template data based on user example
 const templateData = {
-    title: "Requirements for SSW Agriculture",
-    subtitle: "The SSW Agriculture Visa allows foreign nationals to work in Japan’s agriculture sector to address labor shortages. Below are the detailed requirements:",
+    title: "SSW Agriculture Visa",
+    category: "Work Visa · Specified Skilled Worker",
+    subtitle: "The SSW Agriculture Visa allows foreign nationals to work in Japan's agriculture sector to address labor shortages.",
     image: "/visa/agriculture.webp",
     requirements: [
         {
@@ -47,7 +47,7 @@ const templateData = {
         {
             number: "06",
             title: "Training and Experience",
-            content: "While prior experience in agriculture is not mandatory, it is highly advantageous. Applicants who have completed Japan’s Technical Intern Training Program (TITP) in agriculture may have their skills recognized, simplifying the visa process.",
+            content: "While prior experience in agriculture is not mandatory, it is highly advantageous. Applicants who have completed Japan's Technical Intern Training Program (TITP) in agriculture may have their skills recognized, simplifying the visa process.",
             icon: Navigation
         },
         {
@@ -59,7 +59,7 @@ const templateData = {
         {
             number: "08",
             title: "Additional Employer Responsibilities",
-            content: "Employers hiring workers under the SSW Agriculture Visa are required to:\n• Provide proper training to familiarize workers with Japanese agricultural practices.\n• Assist with accommodation and transportation arrangements.\n• Offer ongoing support for workers’ well-being, including help with daily life in Japan.",
+            content: "Employers hiring workers under the SSW Agriculture Visa are required to:\n• Provide proper training to familiarize workers with Japanese agricultural practices.\n• Assist with accommodation and transportation arrangements.\n• Offer ongoing support for workers' well-being, including help with daily life in Japan.",
             icon: Info
         },
         {
@@ -78,225 +78,202 @@ const templateData = {
     benefits: [
         { title: "Career Growth", description: "Opportunity to gain advanced skills and experience in agriculture." },
         { title: "Cultural Exchange", description: "Workers can immerse themselves in Japanese culture and rural communities." },
-        { title: "High Demand", description: "The agriculture sector in Japan faces significant labor shortages, increasing job security for workers." }
+        { title: "High Demand", description: "The agriculture sector in Japan faces significant labor shortages, increasing job security." }
     ],
-    closingText: "By fulfilling these requirements and understanding the scope of work, applicants can successfully secure the SSW Agriculture Visa and contribute to Japan’s vital agricultural industry."
+    stats: {
+        demand: "Very High",
+        difficulty: "Medium",
+        processing: "3–6 Months"
+    },
+    closingText: "By fulfilling these requirements and understanding the scope of work, applicants can successfully secure the SSW Agriculture Visa and contribute to Japan's vital agricultural industry."
 };
 
-// Helper component to render text with bold/list formatting beautifully
-const FormattedText = ({ text }: { text: string }) => {
-    return (
-        <div className="space-y-4 text-slate-600 leading-relaxed text-base md:text-lg">
-            {text.split('\n\n').map((paragraph, i) => (
-                <p key={i}>
-                    {paragraph.split('\n').map((line, j) => {
-                        // Render bullet points differently
-                        if (line.trim().startsWith('•')) {
-                            return (
-                                <span key={j} className="flex gap-3 my-2">
-                                    <span className="text-saku-red mt-1 block">•</span>
-                                    <span dangerouslySetInnerHTML={{ __html: line.substring(1).trim().replace(/\*\*(.*?)\*\*/g, '<strong class="text-saku-dark">$1</strong>') }} />
-                                </span>
-                            );
-                        }
+// Renders plain text with **bold** and • bullet support
+const FormattedText = ({ text }: { text: string }) => (
+    <div className="space-y-3 text-slate-600 leading-relaxed text-base">
+        {text.split('\n\n').map((paragraph, i) => (
+            <div key={i} className="space-y-1.5">
+                {paragraph.split('\n').map((line, j) => {
+                    if (line.trim().startsWith('•')) {
                         return (
-                            <React.Fragment key={j}>
-                                <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-saku-dark">$1</strong>') }} />
-                                {j < paragraph.split('\n').length - 1 && <br />}
-                            </React.Fragment>
+                            <div key={j} className="flex gap-3 items-start pl-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-saku-red mt-2 flex-shrink-0"></span>
+                                <span dangerouslySetInnerHTML={{ __html: line.substring(1).trim().replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-800 font-semibold">$1</strong>') }} />
+                            </div>
                         );
-                    })}
-                </p>
-            ))}
-        </div>
-    );
-};
+                    }
+                    return (
+                        <p key={j} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-800 font-semibold">$1</strong>') }} />
+                    );
+                })}
+            </div>
+        ))}
+    </div>
+);
 
 export default function VisaDetailsTemplatePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const data = templateData; 
+    const data = templateData;
 
     return (
-        <main className="min-h-screen bg-white selection:bg-saku-red selection:text-white">
+        <main className="min-h-screen bg-slate-50 selection:bg-saku-red selection:text-white">
             <Navbar />
 
-            {/* Simple Progress Bar Hook (Visual only) */}
-            <div className="fixed top-0 left-0 w-full h-1 z-50 overflow-hidden pointer-events-none">
-                <motion.div 
-                    initial={{ x: "-100%" }}
-                    animate={{ x: "0%" }}
-                    transition={{ duration: 2, ease: "easeOut" }}
-                    className="w-full h-full bg-saku-red"
+            {/* Top progress bar */}
+            <div className="fixed top-0 left-0 w-full h-1 z-50 pointer-events-none">
+                <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    className="w-full h-full bg-saku-red origin-left"
                 />
             </div>
 
-            <div className="pt-32 pb-20">
-                <div className="container mx-auto px-4 max-w-7xl">
-                    
-                    {/* Header / Breadcrumb */}
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-                        <Link href="/visa" className="inline-flex items-center gap-2 text-slate-500 hover:text-saku-red transition-colors font-bold tracking-widest text-xs uppercase group">
-                            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back to Guides
+            <div className="pt-24">
+
+                {/* Hero Banner */}
+                <div className="relative h-64 md:h-80 w-full overflow-hidden">
+                    <Image
+                        src={data.image}
+                        alt={data.title}
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent"></div>
+                    <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-16 max-w-4xl">
+                        <Link href="/visa" className="inline-flex items-center gap-2 text-white/70 hover:text-white text-xs font-bold tracking-widest uppercase mb-4 transition-colors group w-fit">
+                            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back to Visa Guide
                         </Link>
-                        <div className="flex items-center gap-4 text-slate-400 text-xs font-bold tracking-widest uppercase">
-                            <span>Published: April 2026</span>
-                            <span className="w-1 h-1 bg-slate-300 rounded-full"></span>
-                            <span>8 Min Read</span>
-                        </div>
+                        <span className="text-saku-red text-xs font-bold tracking-widest uppercase mb-2">{data.category}</span>
+                        <h1 className="font-display text-3xl md:text-5xl font-bold text-white leading-tight">{data.title}</h1>
+                    </div>
+                </div>
+
+                {/* Page Body */}
+                <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-12">
+
+                    {/* Intro Card */}
+                    <div className="bg-white rounded-2xl p-8 mb-8 border border-slate-100 shadow-sm">
+                        <p className="text-slate-600 text-lg leading-relaxed">{data.subtitle}</p>
                     </div>
 
-                    <div className="flex flex-col lg:flex-row gap-16">
-                        
-                        {/* Main Content Column */}
-                        <article className="lg:w-2/3">
-                            <header className="mb-12">
+                    <div className="flex flex-col lg:flex-row gap-8">
+
+                        {/* ── MAIN CONTENT ── */}
+                        <article className="flex-1 min-w-0 space-y-4">
+
+                            {/* Requirements */}
+                            {data.requirements.map((req, idx) => (
                                 <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.6 }}
+                                    key={idx}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.04 }}
+                                    className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
                                 >
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <div className="w-10 h-1 bg-saku-red"></div>
-                                        <span className="text-saku-red font-bold tracking-[0.2em] uppercase text-xs">Visa Requirements Guide</span>
+                                    {/* Card Header */}
+                                    <div className="flex items-center gap-4 px-6 py-4 border-b border-slate-50 bg-slate-50/50">
+                                        <span className="text-xs font-black text-slate-300 tracking-widest w-6">{req.number}</span>
+                                        <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center flex-shrink-0">
+                                            <req.icon size={16} className="text-saku-red" />
+                                        </div>
+                                        <h2 className="font-display text-base md:text-lg font-bold text-saku-dark">{req.title}</h2>
                                     </div>
-                                    <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-saku-dark mb-8 leading-[1.1]">
-                                        {data.title}
-                                    </h1>
-                                    <p className="text-xl md:text-2xl text-slate-500 font-medium leading-relaxed italic border-l-4 border-slate-100 pl-8 mb-12">
-                                        {data.subtitle}
-                                    </p>
+                                    {/* Card Body */}
+                                    <div className="px-6 py-5">
+                                        <FormattedText text={req.content} />
+                                    </div>
                                 </motion.div>
+                            ))}
 
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: 0.8 }}
-                                    className="relative aspect-[16/9] md:aspect-[21/9] rounded-[2.5rem] overflow-hidden shadow-2xl mb-16"
-                                >
-                                    <Image
-                                        src={data.image}
-                                        alt={data.title}
-                                        fill
-                                        className="object-cover transition-transform duration-[20s] ease-linear hover:scale-110"
-                                        priority
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                                </motion.div>
-                            </header>
-
-                            <div className="space-y-20 border-b border-slate-100 pb-20">
-                                {data.requirements.map((req, idx) => (
-                                    <section key={idx} className="group relative">
-                                        <div className="flex items-center gap-5 mb-8">
-                                            <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-saku-red group-hover:bg-saku-red group-hover:text-white transition-all duration-500 shadow-sm">
-                                                <req.icon size={24} />
-                                            </div>
-                                            <h2 className="font-display text-2xl md:text-3xl font-bold text-saku-dark">
-                                                {req.title}
-                                            </h2>
-                                        </div>
-                                        <div className="pl-0 md:pl-16">
-                                            <FormattedText text={req.content} />
-                                        </div>
-                                        
-                                        {/* Subtle Divider */}
-                                        {idx < data.requirements.length - 1 && (
-                                            <div className="absolute -bottom-10 left-16 right-0 h-px bg-slate-50"></div>
-                                        )}
-                                    </section>
-                                ))}
-                            </div>
-
-                            {/* Section: Process */}
-                            <section className="pt-20 mb-20">
-                                <h2 className="font-display text-3xl md:text-4xl font-bold text-saku-dark mb-10 flex items-center gap-4">
-                                    <span className="w-8 h-8 rounded-full bg-saku-dark text-white flex items-center justify-center text-sm">✓</span>
-                                    Application Process
-                                </h2>
-                                <div className="space-y-6 pl-4 md:pl-12 border-l-2 border-slate-100">
+                            {/* Application Process */}
+                            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                <div className="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-saku-dark flex items-center justify-center flex-shrink-0">
+                                        <LayersIcon size={16} className="text-white" />
+                                    </div>
+                                    <h2 className="font-display text-base md:text-lg font-bold text-saku-dark">Application Process</h2>
+                                </div>
+                                <div className="px-6 py-5 space-y-3">
                                     {data.processSteps.map((step, idx) => (
-                                        <div key={idx} className="relative group">
-                                            <div className="absolute -left-[3.25rem] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white border-2 border-slate-200 group-hover:border-saku-red transition-colors z-10"></div>
-                                            <div className="bg-slate-50 p-6 rounded-2xl border border-transparent hover:border-slate-200 hover:bg-white hover:shadow-lg transition-all duration-300">
-                                                <div className="flex items-center gap-4">
-                                                    <span className="text-slate-300 font-black text-2xl">0{idx + 1}</span>
-                                                    <p className="text-lg text-slate-600 font-medium">{step}</p>
-                                                </div>
-                                            </div>
+                                        <div key={idx} className="flex gap-4 items-start">
+                                            <span className="w-7 h-7 rounded-full bg-saku-red text-white text-xs font-black flex items-center justify-center flex-shrink-0 mt-0.5">{idx + 1}</span>
+                                            <p className="text-slate-600 leading-relaxed text-base">{step}</p>
                                         </div>
                                     ))}
                                 </div>
-                            </section>
+                            </div>
 
-                            {/* Closing Card */}
-                            <motion.div 
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                className="bg-saku-dark text-white p-12 rounded-[2.5rem] relative overflow-hidden group shadow-2xl"
-                            >
-                                <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-saku-red/20 blur-[100px] rounded-full group-hover:bg-saku-red/40 transition-all duration-700"></div>
-                                <Quote className="text-white/10 absolute top-8 left-8" size={60} />
-                                <p className="relative z-10 text-xl md:text-2xl font-medium leading-relaxed italic text-white/90">
-                                    "{data.closingText}"
-                                </p>
-                            </motion.div>
+                            {/* Closing Note */}
+                            <div className="bg-saku-dark text-white rounded-2xl p-8">
+                                <p className="text-white/80 leading-relaxed text-base italic">"{data.closingText}"</p>
+                            </div>
                         </article>
 
-                        {/* Sidebar Column */}
-                        <aside className="lg:w-1/3">
-                            <div className="sticky top-32 space-y-8">
-                                
-                                {/* Action Card */}
-                                <div className="bg-white border-2 border-saku-dark p-8 rounded-[2rem] shadow-[10px_10px_0px_#000000]">
-                                    <h3 className="font-display text-2xl font-bold text-saku-dark mb-4">Start Your Application</h3>
-                                    <p className="text-slate-500 mb-8 leading-relaxed">
-                                        Ready to take the next step? Our consultants are waiting to help you through the process.
-                                    </p>
-                                    <Link href="/contact" className="flex items-center justify-center gap-3 w-full bg-saku-red text-white py-4 rounded-xl font-bold tracking-widest text-sm hover:bg-saku-dark transition-all duration-300 uppercase shadow-lg shadow-saku-red/20 active:scale-95 group">
-                                        Consult with Us <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                        {/* ── SIDEBAR ── */}
+                        <aside className="lg:w-72 xl:w-80 flex-shrink-0">
+                            <div className="sticky top-28 space-y-5">
+
+                                {/* CTA */}
+                                <div className="bg-white rounded-2xl border-2 border-saku-dark p-6 shadow-[6px_6px_0px_#000000]">
+                                    <h3 className="font-display text-lg font-bold text-saku-dark mb-2">Ready to Apply?</h3>
+                                    <p className="text-slate-500 text-sm mb-5 leading-relaxed">Our consultants will guide you through every step of the process.</p>
+                                    <Link href="/contact" className="flex items-center justify-center gap-2 w-full bg-saku-red text-white py-3 rounded-xl font-bold text-sm hover:bg-saku-dark transition-all group uppercase tracking-wider">
+                                        Contact Us <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                                     </Link>
                                 </div>
 
-                                {/* Benefits Box */}
-                                <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
-                                    <h3 className="font-display text-xl font-bold text-saku-dark mb-6 flex items-center gap-3">
-                                        <Heart size={20} className="text-saku-red" /> Why Choose This?
-                                    </h3>
-                                    <div className="space-y-6">
+                                {/* Quick Stats */}
+                                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                    <div className="px-5 py-3 border-b border-slate-50 bg-slate-50/50">
+                                        <h3 className="font-bold text-sm text-slate-500 uppercase tracking-widest">At a Glance</h3>
+                                    </div>
+                                    <div className="px-5 py-4 divide-y divide-slate-50">
+                                        <div className="flex items-center justify-between py-3">
+                                            <div className="flex items-center gap-2 text-slate-500 text-sm">
+                                                <TrendingUp size={14} /> Demand
+                                            </div>
+                                            <span className="text-saku-red font-bold text-sm">{data.stats.demand}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between py-3">
+                                            <div className="flex items-center gap-2 text-slate-500 text-sm">
+                                                <LayersIcon size={14} /> Difficulty
+                                            </div>
+                                            <span className="text-amber-500 font-bold text-sm">{data.stats.difficulty}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between py-3">
+                                            <div className="flex items-center gap-2 text-slate-500 text-sm">
+                                                <Clock size={14} /> Processing
+                                            </div>
+                                            <span className="text-slate-700 font-bold text-sm">{data.stats.processing}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Why Choose */}
+                                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+                                    <div className="px-5 py-3 border-b border-slate-50 bg-slate-50/50">
+                                        <h3 className="font-bold text-sm text-slate-500 uppercase tracking-widest">Why This Visa?</h3>
+                                    </div>
+                                    <div className="px-5 py-4 space-y-4">
                                         {data.benefits.map((benefit, idx) => (
-                                            <div key={idx} className="flex gap-4">
-                                                <div className="w-6 h-6 shrink-0 rounded-full bg-white border border-slate-200 flex items-center justify-center">
-                                                    <CheckCircle2 size={14} className="text-saku-red" />
-                                                </div>
+                                            <div key={idx} className="flex gap-3">
+                                                <CheckCircle2 size={16} className="text-saku-red flex-shrink-0 mt-0.5" />
                                                 <div>
-                                                    <h4 className="font-bold text-saku-dark text-sm mb-1">{benefit.title}</h4>
-                                                    <p className="text-xs text-slate-500 leading-relaxed">{benefit.description}</p>
+                                                    <p className="font-semibold text-slate-800 text-sm">{benefit.title}</p>
+                                                    <p className="text-slate-500 text-xs leading-relaxed mt-0.5">{benefit.description}</p>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
-                                {/* Quick Fact Section */}
-                                <div className="bg-slate-900 text-white p-8 rounded-[2rem] overflow-hidden relative">
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 blur-[50px] rounded-full"></div>
-                                    <h3 className="font-display text-lg font-bold mb-4 relative z-10 tracking-widest uppercase text-white/50">Industry Status</h3>
-                                    <div className="relative z-10 space-y-4">
-                                        <div className="flex justify-between items-end border-b border-white/10 pb-2">
-                                            <span className="text-white/60 text-sm">Demand</span>
-                                            <span className="text-saku-red font-bold">Very High</span>
-                                        </div>
-                                        <div className="flex justify-between items-end border-b border-white/10 pb-2">
-                                            <span className="text-white/60 text-sm">Difficulty</span>
-                                            <span className="text-blue-400 font-bold">Medium</span>
-                                        </div>
-                                        <div className="flex justify-between items-end">
-                                            <span className="text-white/60 text-sm">Processing Time</span>
-                                            <span className="font-bold">3-6 Months</span>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                {/* Back link */}
+                                <Link href="/visa" className="flex items-center justify-center gap-2 w-full text-slate-400 hover:text-saku-dark text-sm font-bold transition-colors py-2 group">
+                                    <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Browse All Visa Types
+                                </Link>
                             </div>
                         </aside>
 

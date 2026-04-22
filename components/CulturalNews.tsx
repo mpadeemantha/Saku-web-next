@@ -70,7 +70,7 @@ const CulturalNews = () => {
                     ))}
                 </div>
 
-                <div className="mt-24">
+                {/* <div className="mt-24">
                     <div className="mb-12">
                         <span className="text-saku-red font-bold tracking-[0.3em] uppercase text-sm">Cultural Festivals</span>
                         <h2 className="font-display text-3xl sm:text-4xl font-bold mt-4 text-saku-dark">Japanese Traditions</h2>
@@ -99,7 +99,7 @@ const CulturalNews = () => {
                             </motion.div>
                         ))}
                     </div>
-                </div>
+                </div> */}
             </div>
 
 

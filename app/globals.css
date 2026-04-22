@@ -15,6 +15,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 16px; /* 1rem = 16px — consistent base across all pages */
 }
 
 body {
@@ -22,7 +23,69 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  font-size: 1rem;
+  line-height: 1.7;
 }
+
+/* ── Site-wide Typography Scale ──────────────────────────────────
+   Use these classes consistently on every page instead of
+   ad-hoc Tailwind text-* utilities. This ensures all pages
+   have identical text sizes.
+
+   Hierarchy:
+     .text-overline    → badge / overline labels       (10.5px)
+     .text-label       → captions / meta / counts      (12px)
+     .text-body        → standard paragraph text       (15px)
+     .text-subheading  → card titles / step labels     (18px)
+     .text-heading     → section sub-headings (h3)     (24px)
+     .text-section-title → page section titles (h2)   (32px)
+     .text-hero        → hero headline (h1)            (40–72px fluid)
+─────────────────────────────────────────────────────────────── */
+
+.text-overline {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.text-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.text-subheading {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.text-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.text-section-title {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.text-hero {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+/* ── Utilities ─────────────────────────────────────────────────── */
 
 .font-display {
   font-family: var(--font-display);

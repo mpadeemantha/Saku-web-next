@@ -43,12 +43,12 @@ const About = () => {
                             </div>
 
                             {/* Floating "Zen" Card */}
-                            <div className="absolute -bottom-8 -right-8 glass p-8 shadow-xl hidden sm:block z-20">
+                            {/*  <div className="absolute -bottom-8 -right-8 glass p-8 shadow-xl hidden sm:block z-20">
                                 <div className="flex flex-col items-center text-center">
                                     <span className="font-display text-3xl sm:text-4xl font-bold text-saku-dark">10+</span>
                                     <span className="text-sm font-bold uppercase tracking-widest text-gray-500 mt-1">Years of Legacy</span>
                                 </div>
-                            </div>
+                            </div> */}
 
                         </div>
                     </motion.div>
@@ -62,14 +62,14 @@ const About = () => {
                         className="lg:w-1/2"
                     >
                         <div className="flex items-center gap-4 mb-4">
-                            <span className="text-saku-red font-bold tracking-[0.3em] uppercase text-sm">Our Story</span>
+                            <span className="text-saku-red font-bold tracking-[0.3em] uppercase text-text-subheading">Our Story</span>
                         </div>
-                        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-8 text-saku-dark leading-tight">
+                        <h2 className="font-display text-text-section-title sm:text-4xl md:text-5xl font-bold mt-4 mb-8 text-saku-dark leading-tight">
                             Best Japanese Language School in Sri Lanka <br />
                             <span className="text-gray-400"></span>
                         </h2>
 
-                        <p className="text-gray-600 text-lg leading-relaxed mb-8 font-sans">
+                        <p className="text-gray-600 text-text-body leading-relaxed mb-8 font-sans">
                             Welcome to Saku Japanese Language School, your gateway to mastering the Japanese
                             language and realizing your dreams of studying or starting the career in Japan. Based in Sri
                             Lanka, we specialize in providing high-quality language education SSW exam guiding, and
@@ -94,11 +94,11 @@ const About = () => {
                         </div>
 
                         <div className="flex items-center gap-8">
-                            <Link href="/about" className="bg-saku-dark text-white px-8 py-4 font-bold tracking-widest hover:bg-saku-red transition-all duration-300 block">
+                            <Link href="/about" className="bg-saku-dark text-white text-text-label px-8 py-4 font-bold tracking-widest hover:bg-saku-red transition-all duration-300 block">
                                 LEARN MORE
                             </Link>
                             <div className="flex flex-col">
-                                <span className="font-display text-lg text-saku-dark"></span>
+                                <span className="font-display text-text-label text-saku-dark"></span>
                                 <span className="text-[9px] font-extrabold uppercase tracking-widest text-gray-400"></span>
                             </div>
                         </div>
