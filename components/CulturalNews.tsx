@@ -13,7 +13,8 @@ const CulturalNews = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const data = await getPosts(2);
+                // Fetch latest 2 posts from News (22) and Event (3) categories
+                const data = await getPosts(2, "22,3");
                 setPosts(data);
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -66,7 +67,22 @@ const CulturalNews = () => {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
                         {posts.map((post, index) => {
-                            const imageUrl = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg";
+                            // Smart Image Fallback
+                            const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
+                            let imageUrl = (featuredMedia as any)?.source_url;
+
+                            if (!imageUrl || (featuredMedia as any)?.code === 'rest_forbidden') {
+                                const content = post.content.rendered;
+                                const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+                                if (imgMatch && imgMatch[1]) {
+                                    imageUrl = imgMatch[1];
+                                }
+                            }
+
+                            if (!imageUrl) {
+                                imageUrl = "/student/ff-saku.jpg";
+                            }
+
                             const excerpt = post.excerpt.rendered.replace(/<[^>]+>/g, "").substring(0, 120) + "...";
 
                             return (
