@@ -58,12 +58,34 @@ export default function VisaPage() {
                                     : subCat.slug.includes('scholarship')
                                     ? "Fully or partially funded opportunities for outstanding students."
                                     : `Opportunities and requirements for ${subCat.name} in Japan.`,
-                                items: posts.map(post => ({
-                                    title: post.title.rendered,
-                                    slug: post.slug,
-                                    description: post.excerpt.rendered.replace(/<[^>]*>/g, '').slice(0, 150) + '...',
-                                    image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg"
-                                }))
+                                items: posts.map(post => {
+                                    // 1. Try to get featured image from _embedded
+                                    const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
+                                    let imageUrl = (featuredMedia as any)?.source_url;
+                                    
+                                    // 2. Fallback: Extract first image from content if featured image is missing/forbidden
+                                    if (!imageUrl) {
+                                        const content = post.content.rendered;
+                                        const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+                                        if (imgMatch && imgMatch[1]) {
+                                            imageUrl = imgMatch[1];
+                                            console.log(`Extracted image from content for: ${post.title.rendered}`);
+                                        }
+                                    }
+
+                                    // 3. Final Fallback: Saku default
+                                    if (!imageUrl) {
+                                        imageUrl = "/student/ff-saku.jpg";
+                                        console.warn(`No image found for post: ${post.title.rendered}. Using final fallback.`);
+                                    }
+
+                                    return {
+                                        title: post.title.rendered,
+                                        slug: post.slug,
+                                        description: post.excerpt.rendered.replace(/<[^>]*>/g, '').slice(0, 150) + '...',
+                                        image: imageUrl
+                                    };
+                                })
                             });
                         }
                     }
@@ -215,25 +237,35 @@ export default function VisaPage() {
                         <div className="lg:w-72 xl:w-80 flex-shrink-0">
                             <p className="text-overline text-slate-400 mb-4">Step 2 — Select Program</p>
                             <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
-                                {activeData?.subCategories.map((sub: any) => (
-                                    <button
-                                        key={sub.id}
-                                        onClick={() => handleSubTabChange(sub.id)}
-                                        className={`flex-shrink-0 lg:flex-shrink text-left p-4 rounded-2xl border-2 transition-all duration-300 w-52 lg:w-full ${
-                                            activeSubTab === sub.id
-                                                ? 'border-saku-dark bg-saku-dark text-white shadow-lg'
-                                                : 'border-slate-100 bg-slate-50 text-slate-700 hover:bg-white hover:border-slate-200 hover:shadow-md'
-                                        }`}
-                                    >
-                                        <div className="flex items-center justify-between gap-2">
-                                            <div className="min-w-0">
-                                                <div className={`font-bold text-label leading-tight ${activeSubTab === sub.id ? 'text-white' : 'text-slate-800'}`}>{sub.title}</div>
-                                                <div className={`text-label mt-0.5 ${activeSubTab === sub.id ? 'text-white/60' : 'text-slate-400'}`}>{sub.items.length} program{sub.items.length !== 1 ? 's' : ''}</div>
-                                            </div>
-                                            {activeSubTab === sub.id && <ChevronRight size={16} className="flex-shrink-0 text-white/70" />}
+                                {loading ? (
+                                    // Subcategory Skeletons
+                                    [1, 2, 3].map((i) => (
+                                        <div key={i} className="flex-shrink-0 lg:flex-shrink p-4 rounded-2xl border-2 border-slate-50 bg-slate-50 animate-pulse w-52 lg:w-full h-[76px]">
+                                            <div className="h-4 bg-slate-200 rounded w-2/3 mb-2" />
+                                            <div className="h-3 bg-slate-200 rounded w-1/3" />
                                         </div>
-                                    </button>
-                                ))}
+                                    ))
+                                ) : (
+                                    activeData?.subCategories.map((sub: any) => (
+                                        <button
+                                            key={sub.id}
+                                            onClick={() => handleSubTabChange(sub.id)}
+                                            className={`flex-shrink-0 lg:flex-shrink text-left p-4 rounded-2xl border-2 transition-all duration-300 w-52 lg:w-full ${
+                                                activeSubTab === sub.id
+                                                    ? 'border-saku-dark bg-saku-dark text-white shadow-lg'
+                                                    : 'border-slate-100 bg-slate-50 text-slate-700 hover:bg-white hover:border-slate-200 hover:shadow-md'
+                                            }`}
+                                        >
+                                            <div className="flex items-center justify-between gap-2">
+                                                <div className="min-w-0">
+                                                    <div className={`font-bold text-label leading-tight ${activeSubTab === sub.id ? 'text-white' : 'text-slate-800'}`}>{sub.title}</div>
+                                                    <div className={`text-label mt-0.5 ${activeSubTab === sub.id ? 'text-white/60' : 'text-slate-400'}`}>{sub.items.length} program{sub.items.length !== 1 ? 's' : ''}</div>
+                                                </div>
+                                                {activeSubTab === sub.id && <ChevronRight size={16} className="flex-shrink-0 text-white/70" />}
+                                            </div>
+                                        </button>
+                                    ))
+                                )}
                             </div>
                         </div>
 
@@ -268,7 +300,7 @@ export default function VisaPage() {
 
                                         {/* Items Grid */}
                                         <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                                            {currentSubCategory.items.map((item: { title: string; description: string; image: string }, idx: number) => (
+                                            {currentSubCategory.items.map((item: { title: string; description: string; image: string; slug: string }, idx: number) => (
                                                 <div key={idx} className="bg-white border border-slate-100 shadow-sm flex flex-col group hover:shadow-2xl transition-all duration-500 rounded-2xl overflow-hidden">
                                                     <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                                                         <Image
@@ -284,7 +316,7 @@ export default function VisaPage() {
                                                     <div className="p-5 flex flex-col flex-grow">
                                                         <p className="text-body text-slate-500 leading-relaxed mb-5 flex-grow line-clamp-3" dangerouslySetInnerHTML={{ __html: item.description }} />
                                                         <div className="flex flex-col gap-2 mt-auto">
-                                                            <Link href={`/news/${item.slug}`} className="w-full bg-slate-50 border border-slate-200 text-saku-dark text-center py-2.5 font-bold tracking-wider text-xs hover:border-saku-red hover:text-saku-red transition-all uppercase rounded-lg">
+                                                            <Link href={`/visa/details/${item.slug}`} className="w-full bg-slate-50 border border-slate-200 text-saku-dark text-center py-2.5 font-bold tracking-wider text-xs hover:border-saku-red hover:text-saku-red transition-all uppercase rounded-lg">
                                                                 VIEW REQUIREMENTS
                                                             </Link>
                                                             <Link href="/contact" className="w-full bg-saku-red text-white text-center py-2.5 font-bold tracking-wider text-xs hover:bg-saku-dark transition-all active:scale-[0.98] uppercase rounded-lg">

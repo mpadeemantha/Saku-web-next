@@ -12,20 +12,23 @@ export const dynamicParams = false;
 export async function generateStaticParams() {
     try {
         const posts = await getPosts(100); 
+        
+        if (!posts || posts.length === 0) {
+            console.warn("No news posts found for static params, using fallback.");
+            return [{ slug: 'sample-post' }, { slug: 'test' }];
+        }
+
         const params = posts.map((post) => ({
             slug: post.slug,
         }));
         
-        console.log(`Generated params for ${params.length} posts. First few:`, params.slice(0, 5));
-        
-        // Add a fallback slug for development/testing if API is empty
-        if (params.length === 0) {
-            return [{ slug: 'sample-post' }];
-        }
+        // Add common test slugs to avoid dev errors
+        params.push({ slug: 'test' });
+        params.push({ slug: 'sample-post' });
         
         return params;
     } catch (error) {
-        console.error("CRITICAL: Error generating static params:", error);
+        console.error("Error generating static params for news:", error);
         return [{ slug: 'sample-post' }];
     }
 }

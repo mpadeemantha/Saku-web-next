@@ -20,7 +20,9 @@ const NewsPage = () => {
         const loadCategories = async () => {
             try {
                 const data = await getCategories();
-                setCategories(data);
+                // Only show News (22) and Event (3) in the filter bar
+                const filteredCategories = data.filter(c => c.id === 22 || c.id === 3);
+                setCategories(filteredCategories);
             } catch (error) {
                 console.error("Error fetching categories:", error);
             }
@@ -32,7 +34,9 @@ const NewsPage = () => {
         const fetchPosts = async () => {
             setLoadingPosts(true);
             try {
-                const data = await getPosts(12, selectedCategory || undefined);
+                // If no category is selected, show both News (22) and Event (3)
+                const categoryFilter = selectedCategory ? selectedCategory : "22,3";
+                const data = await getPosts(12, categoryFilter);
                 setPosts(data);
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -138,7 +142,24 @@ const NewsPage = () => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                             {posts.map((post, index) => {
-                                const imageUrl = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg";
+                                // 1. Try to get featured image from _embedded
+                                const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
+                                let imageUrl = (featuredMedia as any)?.source_url;
+                                
+                                // 2. Fallback: Extract first image from content if featured image is missing/forbidden
+                                if (!imageUrl || (featuredMedia as any)?.code === 'rest_forbidden') {
+                                    const content = post.content.rendered;
+                                    const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+                                    if (imgMatch && imgMatch[1]) {
+                                        imageUrl = imgMatch[1];
+                                    }
+                                }
+
+                                // 3. Final Fallback: Saku default
+                                if (!imageUrl) {
+                                    imageUrl = "/student/ff-saku.jpg";
+                                }
+
                                 const excerpt = post.excerpt.rendered.replace(/<[^>]+>/g, "").substring(0, 150) + "...";
 
                                 return (

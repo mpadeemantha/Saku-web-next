@@ -1,6 +1,6 @@
 import React from "react";
 import { getPostBySlug, getPosts } from "@/lib/wordpress";
-import VisaDetailsContent from "./VisaDetailsContent";
+import CourseDetailsContent from "./CourseDetailsContent";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 
@@ -12,26 +12,26 @@ export async function generateStaticParams() {
     try {
         const posts = await getPosts(500);
         const params = posts.map((post) => ({
-            id: post.slug,
+            slug: post.slug,
         }));
 
         if (params.length === 0) {
-            return [{ id: 'sample-visa-post' }, { id: 'test' }];
+            return [{ slug: 'sample-course' }, { slug: 'test' }];
         }
 
         // Add common test slugs to avoid dev errors
-        params.push({ id: 'test' });
-        params.push({ id: 'sample-visa-post' });
+        params.push({ slug: 'test' });
+        params.push({ slug: 'sample-course' });
 
         return params;
     } catch (error) {
-        console.error("Error generating static params for visa details:", error);
-        return [{ id: 'sample-visa-post' }];
+        console.error("Error generating static params for course details:", error);
+        return [{ slug: 'sample-course' }];
     }
 }
 
-export default async function VisaDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id: slug } = await params;
+export default async function CourseDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
     
     try {
         const post = await getPostBySlug(slug);
@@ -41,10 +41,10 @@ export default async function VisaDetailsPage({ params }: { params: Promise<{ id
                 <div className="min-h-screen bg-white flex flex-col">
                     <Navbar />
                     <div className="flex-grow flex flex-col items-center justify-center text-center px-4">
-                        <h1 className="text-4xl font-bold text-saku-dark mb-4">Post Not Found</h1>
-                        <p className="text-slate-500 mb-8">The visa program you are looking for might have been moved or removed.</p>
-                        <Link href="/visa" className="inline-block bg-saku-red text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all hover:bg-saku-dark">
-                            Back to Visa Guide
+                        <h1 className="text-4xl font-bold text-saku-dark mb-4">Course Not Found</h1>
+                        <p className="text-slate-500 mb-8">The educational program you are looking for might have been moved or removed.</p>
+                        <Link href="/courses" className="inline-block bg-saku-red text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all hover:bg-saku-dark">
+                            Back to Courses
                         </Link>
                     </div>
                 </div>
@@ -67,7 +67,7 @@ export default async function VisaDetailsPage({ params }: { params: Promise<{ id
             imageUrl = "/student/ff-saku.jpg";
         }
 
-        // Inject the found image into the post object for the client component
+        // Inject the found image into the post object
         const enrichedPost = {
             ...post,
             _embedded: {
@@ -76,17 +76,17 @@ export default async function VisaDetailsPage({ params }: { params: Promise<{ id
             }
         };
 
-        return <VisaDetailsContent post={enrichedPost} />;
+        return <CourseDetailsContent post={enrichedPost} />;
     } catch (error) {
-        console.error("Error rendering visa details page:", error);
+        console.error("Error rendering course details page:", error);
         return (
             <div className="min-h-screen bg-white flex flex-col">
                 <Navbar />
                 <div className="flex-grow flex flex-col items-center justify-center text-center px-4">
                     <h1 className="text-4xl font-bold text-saku-dark mb-4">Server Error</h1>
-                    <p className="text-slate-500 mb-8">An error occurred while fetching the visa program details.</p>
-                    <Link href="/visa" className="inline-block bg-saku-red text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all hover:bg-saku-dark">
-                        Back to Visa Guide
+                    <p className="text-slate-500 mb-8">An error occurred while fetching the course details.</p>
+                    <Link href="/courses" className="inline-block bg-saku-red text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-all hover:bg-saku-dark">
+                        Back to Courses
                     </Link>
                 </div>
             </div>

@@ -1,58 +1,112 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BriefcaseBusiness, Wrench, Globe, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-
-const sswData = {
-    ssw1: {
-        id: 'ssw1',
-        label: 'SSW Type I',
-        sublabel: 'Skilled Worker · Up to 5 Years',
-        subCategories: [
-            {
-                id: 'driving',
-                title: 'Driving & Logistics',
-                description: 'Professional driving and logistics operations for moving goods and people across Japan.',
-                items: [
-                    { id: 'transport', title: 'Truck Driving Skill Course', description: 'Professional driving and logistics operations for moving goods and people across Japan.', image: '/visa/transport.webp' },
-                ]
-            },
-        ]
-    },
-    ssw2: {
-        id: 'ssw2',
-        label: 'SSW Type II',
-        sublabel: 'Expert Level · Permanent Path',
-        subCategories: [
-            {
-                id: 'food',
-                title: 'Food Industry',
-                description: 'Advanced specialized skills in food service and manufacturing management for long-term residency.',
-                items: [
-                    { id: 'food-service-2', title: 'SSW Food Service Skill Course (Category II)', description: 'Advanced management and specialized skills for the Japanese food service industry, leading to long-term residency.', image: '/visa/food service.webp' },
-                    { id: 'food-manufacturing-2', title: 'SSW Food Manufacturing Skill Course (Category II)', description: 'Professional leadership and technical mastery in food production lines and manufacturing management.', image: '/visa/food and bev.webp' }
-                ]
-            },
-        ]
-    }
-};
+import { getPosts, getCategories, WordPressPost, WordPressCategory } from "@/lib/wordpress";
 
 export default function SSWPage() {
     const [activeTab, setActiveTab] = useState<'ssw1' | 'ssw2'>('ssw1');
-    const [activeSubTab, setActiveSubTab] = useState<string>('driving');
+    const [activeSubTab, setActiveSubTab] = useState<string>('');
+    const [loading, setLoading] = useState(true);
+    const [sswData, setSSWData] = useState<any>(null);
+
+    useEffect(() => {
+        const loadSSWData = async () => {
+            setLoading(true);
+            try {
+                const categories = await getCategories();
+                
+                // Find main categories (SSW Type I: 12, SSW Type II: 13)
+                const ssw1Cat = categories.find(c => c.id === 12 || c.slug.toLowerCase() === 'ssw-type-i');
+                const ssw2Cat = categories.find(c => c.id === 13 || c.slug.toLowerCase() === 'ssw-type-ii');
+
+                const result: any = {
+                    ssw1: { id: 'ssw1', label: 'SSW Type I', sublabel: 'Skilled Worker · Up to 5 Years', subCategories: [] },
+                    ssw2: { id: 'ssw2', label: 'SSW Type II', sublabel: 'Expert Level · Permanent Path', subCategories: [] }
+                };
+
+                // Helper to process subcategories
+                const processMainCat = async (mainCat: WordPressCategory, key: 'ssw1' | 'ssw2') => {
+                    if (!mainCat) return;
+                    // Find children of the main category
+                    const subCats = categories.filter(c => c.parent === mainCat.id);
+                    
+                    // If no children, use the main category itself as a single subcategory
+                    const categoriesToProcess = subCats.length > 0 ? subCats : [mainCat];
+
+                    for (const subCat of categoriesToProcess) {
+                        const posts = await getPosts(50, subCat.id);
+                        if (posts.length > 0) {
+                            result[key].subCategories.push({
+                                id: subCat.slug,
+                                title: subCat.name,
+                                description: subCat.description || `Opportunities and requirements for ${subCat.name} in Japan.`,
+                                items: posts.map(post => {
+                                    // Smart Image Fallback
+                                    const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
+                                    let imageUrl = (featuredMedia as any)?.source_url;
+
+                                    if (!imageUrl || (featuredMedia as any)?.code === 'rest_forbidden') {
+                                        const content = post.content.rendered;
+                                        const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+                                        if (imgMatch && imgMatch[1]) {
+                                            imageUrl = imgMatch[1];
+                                        }
+                                    }
+
+                                    if (!imageUrl) {
+                                        imageUrl = "/student/ff-saku.jpg";
+                                    }
+
+                                    return {
+                                        title: post.title.rendered,
+                                        slug: post.slug,
+                                        description: post.excerpt.rendered.replace(/<[^>]*>/g, '').slice(0, 150) + '...',
+                                        image: imageUrl
+                                    };
+                                })
+                            });
+                        }
+                    }
+                };
+
+                const promises = [];
+                if (ssw1Cat) promises.push(processMainCat(ssw1Cat, 'ssw1'));
+                if (ssw2Cat) promises.push(processMainCat(ssw2Cat, 'ssw2'));
+
+                await Promise.all(promises);
+
+                setSSWData(result);
+                
+                // Set initial active subtab
+                const initialKey = activeTab;
+                if (result[initialKey].subCategories.length > 0) {
+                    setActiveSubTab(result[initialKey].subCategories[0].id);
+                }
+            } catch (error) {
+                console.error("Error loading SSW data from WordPress:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadSSWData();
+    }, []);
 
     const handleTabChange = (tab: 'ssw1' | 'ssw2') => {
         setActiveTab(tab);
-        setActiveSubTab(sswData[tab].subCategories[0].id);
+        if (sswData && sswData[tab].subCategories.length > 0) {
+            setActiveSubTab(sswData[tab].subCategories[0].id);
+        }
     };
 
-    const activeData = sswData[activeTab];
-    const currentSubCategory = activeData.subCategories.find(sub => sub.id === activeSubTab) || activeData.subCategories[0];
+    const activeData = sswData ? sswData[activeTab] : null;
+    const currentSubCategory = activeData?.subCategories.find((sub: any) => sub.id === activeSubTab) || activeData?.subCategories[0];
 
     return (
         <main className="min-h-screen relative overflow-x-hidden bg-white">
@@ -85,7 +139,7 @@ export default function SSWPage() {
             </section>
 
             {/* Content */}
-            <section className="py-16 md:py-20 bg-white">
+            <section className="py-16 md:py-20 bg-white min-h-[800px]">
                 <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
 
                     {/* Step 1 */}
@@ -104,8 +158,8 @@ export default function SSWPage() {
                                     <BriefcaseBusiness size={22} className={activeTab === 'ssw1' ? 'text-white' : 'text-slate-600'} />
                                 </div>
                                 <div>
-                                    <div className="font-bold text-subheading">{sswData.ssw1.label}</div>
-                                    <div className={`text-label ${activeTab === 'ssw1' ? 'text-white/70' : 'text-slate-400'}`}>{sswData.ssw1.sublabel}</div>
+                                    <div className="font-bold text-subheading">SSW Type I</div>
+                                    <div className={`text-label ${activeTab === 'ssw1' ? 'text-white/70' : 'text-slate-400'}`}>Skilled Worker · Up to 5 Years</div>
                                 </div>
                                 {activeTab === 'ssw1' && <ChevronRight size={18} className="ml-auto text-white/70" />}
                             </button>
@@ -122,8 +176,8 @@ export default function SSWPage() {
                                     <Wrench size={22} className={activeTab === 'ssw2' ? 'text-white' : 'text-slate-600'} />
                                 </div>
                                 <div>
-                                    <div className="font-bold text-subheading">{sswData.ssw2.label}</div>
-                                    <div className={`text-label ${activeTab === 'ssw2' ? 'text-white/70' : 'text-slate-400'}`}>{sswData.ssw2.sublabel}</div>
+                                    <div className="font-bold text-subheading">SSW Type II</div>
+                                    <div className={`text-label ${activeTab === 'ssw2' ? 'text-white/70' : 'text-slate-400'}`}>Expert Level · Permanent Path</div>
                                 </div>
                                 {activeTab === 'ssw2' && <ChevronRight size={18} className="ml-auto text-white/70" />}
                             </button>
@@ -131,20 +185,20 @@ export default function SSWPage() {
                     </div>
 
                     {/* Step 2: Sidebar + Items */}
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={activeTab}
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -16 }}
-                            transition={{ duration: 0.3 }}
-                            className="flex flex-col lg:flex-row gap-8"
-                        >
-                            {/* Sidebar */}
-                            <div className="lg:w-72 xl:w-80 flex-shrink-0">
-                                <p className="text-overline text-slate-400 mb-4">Step 2 — Select Industry</p>
-                                <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
-                                    {activeData.subCategories.map((sub) => (
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        {/* Sidebar */}
+                        <div className="lg:w-72 xl:w-80 flex-shrink-0">
+                            <p className="text-overline text-slate-400 mb-4">Step 2 — Select Industry</p>
+                            <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
+                                {loading ? (
+                                    [1, 2, 3].map((i) => (
+                                        <div key={i} className="flex-shrink-0 lg:flex-shrink p-4 rounded-2xl border-2 border-slate-50 bg-slate-50 animate-pulse w-52 lg:w-full h-[76px]">
+                                            <div className="h-4 bg-slate-200 rounded w-2/3 mb-2" />
+                                            <div className="h-3 bg-slate-200 rounded w-1/3" />
+                                        </div>
+                                    ))
+                                ) : (
+                                    activeData?.subCategories.map((sub: any) => (
                                         <button
                                             key={sub.id}
                                             onClick={() => setActiveSubTab(sub.id)}
@@ -162,37 +216,52 @@ export default function SSWPage() {
                                                 {activeSubTab === sub.id && <ChevronRight size={16} className="flex-shrink-0 text-white/70" />}
                                             </div>
                                         </button>
-                                    ))}
-                                </div>
+                                    ))
+                                )}
                             </div>
+                        </div>
 
-                            {/* Items */}
-                            <div className="flex-1 min-w-0">
-                                <AnimatePresence mode="wait">
+                        {/* Items */}
+                        <div className="flex-1 min-w-0">
+                            <AnimatePresence mode="wait">
+                                {loading ? (
+                                    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                                        {[1, 2, 3].map((i) => (
+                                            <div key={i} className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm animate-pulse h-96">
+                                                <div className="h-48 bg-slate-100 w-full" />
+                                                <div className="p-5 space-y-4">
+                                                    <div className="h-4 bg-slate-100 rounded w-3/4" />
+                                                    <div className="h-3 bg-slate-100 rounded w-full" />
+                                                    <div className="h-3 bg-slate-100 rounded w-5/6" />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
                                     <motion.div
-                                        key={activeSubTab}
+                                        key={`${activeTab}-${activeSubTab}`}
                                         initial={{ opacity: 0, x: 16 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: -16 }}
                                         transition={{ duration: 0.25 }}
                                     >
                                         <div className="mb-8 pb-6 border-b border-slate-100">
-                                            <h2 className="font-display text-heading font-bold text-saku-dark mb-1">{currentSubCategory.title}</h2>
-                                            <p className="text-body text-slate-500 leading-relaxed">{currentSubCategory.description}</p>
+                                            <h2 className="font-display text-heading font-bold text-saku-dark mb-1">{currentSubCategory?.title}</h2>
+                                            <p className="text-body text-slate-500 leading-relaxed" dangerouslySetInnerHTML={{ __html: currentSubCategory?.description || "" }} />
                                         </div>
 
                                         <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                                            {currentSubCategory.items.map((item: { id: string; title: string; description: string; image: string }, idx: number) => (
+                                            {currentSubCategory?.items.map((item: any, idx: number) => (
                                                 <div key={idx} className="bg-white border border-slate-100 shadow-sm flex flex-col group hover:shadow-2xl transition-all duration-500 rounded-2xl overflow-hidden">
                                                     <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                                                         <Image src={item.image} alt={item.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="(max-width: 768px) 100vw, 50vw" />
                                                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                                                        <h3 className="absolute bottom-4 left-4 right-4 font-display text-label font-bold text-white z-10 leading-tight">{item.title}</h3>
+                                                        <h3 className="absolute bottom-4 left-4 right-4 font-display text-label font-bold text-white z-10 leading-tight" dangerouslySetInnerHTML={{ __html: item.title }} />
                                                     </div>
                                                     <div className="p-5 flex flex-col flex-grow">
-                                                        <p className="text-body text-slate-500 leading-relaxed mb-5 flex-grow">{item.description}</p>
+                                                        <p className="text-body text-slate-500 leading-relaxed mb-5 flex-grow line-clamp-3" dangerouslySetInnerHTML={{ __html: item.description }} />
                                                         <div className="flex flex-col gap-2 mt-auto">
-                                                            <Link href={`/visa/details/${item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="w-full bg-slate-50 border border-slate-200 text-saku-dark text-center py-2.5 font-bold tracking-wider text-xs hover:border-saku-red hover:text-saku-red transition-all uppercase rounded-lg">
+                                                            <Link href={`/courses/${item.slug}`} className="w-full bg-slate-50 border border-slate-200 text-saku-dark text-center py-2.5 font-bold tracking-wider text-xs hover:border-saku-red hover:text-saku-red transition-all uppercase rounded-lg">
                                                                 VIEW REQUIREMENTS
                                                             </Link>
                                                             <Link href="/contact" className="w-full bg-saku-red text-white text-center py-2.5 font-bold tracking-wider text-xs hover:bg-saku-dark transition-all active:scale-[0.98] uppercase rounded-lg">
@@ -204,10 +273,10 @@ export default function SSWPage() {
                                             ))}
                                         </div>
                                     </motion.div>
-                                </AnimatePresence>
-                            </div>
-                        </motion.div>
-                    </AnimatePresence>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </div>
                 </div>
             </section>
 

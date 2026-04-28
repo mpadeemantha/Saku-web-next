@@ -18,7 +18,23 @@ const PostContent = ({ post, latestPosts }: { post: WordPressPost; latestPosts?:
         });
     };
 
-    const imageUrl = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg";
+    // 1. Try to get featured image from _embedded
+    const featuredMedia = post._embedded?.['wp:featuredmedia']?.[0];
+    let imageUrl = (featuredMedia as any)?.source_url;
+    
+    // 2. Fallback: Extract first image from content if featured image is missing/forbidden
+    if (!imageUrl || (featuredMedia as any)?.code === 'rest_forbidden') {
+        const content = post.content.rendered;
+        const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+        if (imgMatch && imgMatch[1]) {
+            imageUrl = imgMatch[1];
+        }
+    }
+
+    // 3. Final Fallback: Saku default
+    if (!imageUrl) {
+        imageUrl = "/student/ff-saku.jpg";
+    }
 
     const extractImages = (html: string) => {
         const imgRegExp = /<img[^>]+src="([^">]+)"/g;
@@ -198,7 +214,20 @@ const PostContent = ({ post, latestPosts }: { post: WordPressPost; latestPosts?:
                                         <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-50 pb-4">Latest Updates</h3>
                                         <div className="space-y-6">
                                             {latestPosts.filter(p => p.id !== post.id).slice(0, 4).map((lp) => {
-                                                const lpImage = lp._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg";
+                                                const lpMedia = lp._embedded?.["wp:featuredmedia"]?.[0];
+                                                let lpImage = (lpMedia as any)?.source_url;
+
+                                                if (!lpImage || (lpMedia as any)?.code === 'rest_forbidden') {
+                                                    const content = lp.content.rendered;
+                                                    const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+                                                    if (imgMatch && imgMatch[1]) {
+                                                        lpImage = imgMatch[1];
+                                                    }
+                                                }
+
+                                                if (!lpImage) {
+                                                    lpImage = "/student/ff-saku.jpg";
+                                                }
                                                 return (
                                                     <Link key={lp.id} href={`/news/${lp.slug}`} className="flex gap-4 group cursor-pointer">
                                                         <div className="relative w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden border border-slate-100">
