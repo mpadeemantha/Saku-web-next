@@ -1,34 +1,38 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-
-const newsItems = [
-    {
-        title: "New Cookery Spoken Course",
-        date: "Feb 15, 2024",
-        category: "News",
-        summary: "Learn authentic Japanese culinary skills while improving your spoken Japanese.",
-        image: "/student/ff-saku.jpg",
-    },
-    {
-        title: "JLPT N5 Enrollment Open",
-        date: "Feb 10, 2024",
-        category: "Enrollment",
-        summary: "Limited seats available for the upcoming N5 intensive batch starting next month.",
-        image: "/student/main.jpg",
-    },
-];
-
-const festivals = [
-    { name: "Sakura Festival", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000" },
-    { name: "Nebuta Matsuri", image: "https://images.unsplash.com/photo-1534073828943-f801091bb18c?q=80&w=1000" },
-    { name: "Gion Matsuri", image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1000" },
-    { name: "Tanabata", image: "https://images.unsplash.com/photo-1542159416-09292ade61bd?q=80&w=1000" },
-];
+import Link from "next/link";
+import { getPosts, WordPressPost } from "@/lib/wordpress";
 
 const CulturalNews = () => {
+    const [posts, setPosts] = useState<WordPressPost[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const data = await getPosts(2);
+                setPosts(data);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPosts();
+    }, []);
+
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        });
+    };
+
     return (
         <section className="py-24 bg-[#fbfbfb] overflow-hidden">
             <div className="container mx-auto px-6">
@@ -37,38 +41,70 @@ const CulturalNews = () => {
                         <span className="text-saku-red font-bold tracking-[0.3em] uppercase text-sm">Community</span>
                         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mt-4 text-saku-dark">Recent News & Events</h2>
                     </div>
-                    <button className="text-sm font-bold tracking-widest border-b-2 border-saku-red pb-1 hover:text-saku-red transition-colors">
+                    <Link href="/news" className="text-sm font-bold tracking-widest border-b-2 border-saku-red pb-1 hover:text-saku-red transition-colors">
                         VIEW ALL ARCHIVES
-                    </button>
+                    </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-                    {newsItems.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                            className="flex flex-col sm:flex-row bg-white overflow-hidden shadow-sm group hover:shadow-xl transition-shadow duration-500"
-                        >
-                            <div className="relative w-full sm:w-1/2 h-48 sm:h-auto overflow-hidden">
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                                />
+                {loading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+                        {[1, 2].map((i) => (
+                            <div key={i} className="flex flex-col sm:flex-row bg-white overflow-hidden shadow-sm border border-gray-100 rounded-2xl animate-pulse h-64 sm:h-auto">
+                                <div className="w-full sm:w-1/2 h-48 sm:h-auto bg-slate-200" />
+                                <div className="p-8 sm:w-1/2 flex flex-col justify-center space-y-4">
+                                    <div className="h-4 bg-slate-200 rounded w-1/3" />
+                                    <div className="h-6 bg-slate-200 rounded w-3/4" />
+                                    <div className="space-y-2">
+                                        <div className="h-3 bg-slate-200 rounded w-full" />
+                                        <div className="h-3 bg-slate-200 rounded w-5/6" />
+                                    </div>
+                                    <div className="h-3 bg-slate-100 rounded w-1/4 mt-2" />
+                                </div>
                             </div>
-                            <div className="p-8 sm:w-1/2 flex flex-col justify-center">
-                                <span className="text-sm font-bold text-saku-red uppercase mb-2">{item.category}</span>
-                                <h3 className="font-display text-xl font-bold mb-3">{item.title}</h3>
-                                <p className="text-gray-500 text-base md:text-lg mb-4 leading-relaxed">{item.summary}</p>
-                                <span className="text-sm text-gray-400 font-sans">{item.date}</span>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+                        {posts.map((post, index) => {
+                            const imageUrl = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg";
+                            const excerpt = post.excerpt.rendered.replace(/<[^>]+>/g, "").substring(0, 120) + "...";
+
+                            return (
+                                <motion.div
+                                    key={post.id}
+                                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.6 }}
+                                    viewport={{ once: true }}
+                                    className="flex flex-col sm:flex-row bg-white overflow-hidden shadow-sm group hover:shadow-xl transition-all duration-500 border border-gray-100 rounded-2xl"
+                                >
+                                    <div className="relative w-full sm:w-1/2 h-48 sm:h-auto overflow-hidden">
+                                        <Image
+                                            src={imageUrl}
+                                            alt={post.title.rendered}
+                                            fill
+                                            className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                        />
+                                    </div>
+                                    <div className="p-8 sm:w-1/2 flex flex-col justify-center">
+                                        <span className="text-sm font-bold text-saku-red uppercase mb-2">News</span>
+                                        <Link href={`/news/${post.slug}`}>
+                                            <h3 
+                                                className="font-display text-xl font-bold mb-3 line-clamp-2 hover:text-saku-red transition-colors cursor-pointer"
+                                                dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                                            />
+                                        </Link>
+                                        <p className="text-gray-500 text-body mb-4 leading-relaxed line-clamp-3">
+                                            {excerpt}
+                                        </p>
+                                        <span className="text-label text-gray-400 font-sans uppercase tracking-wider">{formatDate(post.date)}</span>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                )}
+
 
                 {/* <div className="mt-24">
                     <div className="mb-12">

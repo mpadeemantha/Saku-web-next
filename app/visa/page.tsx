@@ -8,71 +8,131 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-const visaData = {
-    student: {
-        id: 'student visa',
-        subCategories: [
-            {
-                id: 'scholarship',
-                title: 'Scholarship Programs',
-                description: 'Fully or partially funded opportunities for outstanding students.',
-                items: [
-                    { title: 'Scholarship', description: 'Full tuition coverage plus living allowance while training as a certified caregiver in Japan.', image: '/visa/scholarship.webp' },
-                ]
-            },
-        ]
-    },
-    work: {
-        id: 'work visa',
-        subCategories: [
-            {
-                id: 'ssw',
-                title: 'SSW Visa',
-                description: 'Specified Skilled Worker (SSW). For skilled workers passing technical and language exams in specific industries.',
-                items: [
-                    { title: 'Caregiver', description: 'Work in specialized nursing facilities, providing essential care and support for the elderly in Japan.', image: '/visa/caregiver.webp' },
-                    { title: 'Food Service', description: 'Opportunities in the dynamic Japanese restaurant, catering, and food preparation sectors.', image: '/visa/food service.webp' },
-                    { title: 'Agriculture', description: 'Engage in general crop farming and livestock agriculture across various regions of Japan.', image: '/visa/agriculture.webp' },
-                    { title: 'Building Cleaning', description: 'Professional interior building cleaning management for commercial and hotel properties.', image: '/visa/cleaning.webp' },
-                    { title: 'Food & Beverage Manufacturing', description: 'Work in food production plants, processing facilities, and quality control lines.', image: '/visa/food and bev.webp' },
-                    { title: 'Airport Ground Handling', description: 'Support airport operations through baggage handling, cargo management, and ground services.', image: '/visa/airport g.webp' },
-                    { title: 'Accommodation', description: 'Provide hospitality and management services in Japanese hotels, traditional inns, and resorts.', image: '/visa/acommodation.webp' },
-                    { title: 'Transportation', description: 'Professional driving and logistics operations for moving goods and people across Japan.', image: '/visa/transport.webp' },
-                    { title: 'Construction', description: 'Skilled roles in civil engineering, architecture, and specialized construction machinery operation.', image: '/visa/construct.webp' },
-                    { title: 'Automobile Mechanic', description: 'Specialized maintenance and repair services for vehicles in certified Japanese workshops.', image: '/visa/automobile m.webp' }
-                ]
-            },
-            {
-                id: 'titp',
-                title: 'Trainees Visa',
-                description: 'Technical Intern Training (TITP). Learn Japanese advanced skills through practical employment.',
-                items: [
-                    { title: 'Construction Intern', description: 'Learn advanced Japanese civil engineering and building techniques.', image: '/visa/construct tr.jpg' }
-                ]
-            },
-            {
-                id: 'highlySkilled',
-                title: 'Engineer / Humanities',
-                description: 'For IT engineers, researchers, and specialized degree-holding professionals.',
-                items: [
-                    { title: 'Engineer, Humanities, International Services', description: 'For certified software developers, data scientists, and infrastructure engineers.', image: '/visa/it visa.jpg' },
-                ]
-            }
-        ]
-    }
-};
+import { getPosts, getCategories, WordPressPost, WordPressCategory } from "@/lib/wordpress";
 
 export default function VisaPage() {
     const [activeTab, setActiveTab] = useState<'student' | 'work'>('work');
-    const [activeSubTab, setActiveSubTab] = useState<string>('ssw');
+    const [activeSubTab, setActiveSubTab] = useState<string>('');
+    const [loading, setLoading] = useState(true);
+    const [visaData, setVisaData] = useState<any>(null);
+
+    React.useEffect(() => {
+        const loadVisaData = async () => {
+            setLoading(true);
+            try {
+                const categories = await getCategories();
+                
+                // Find main categories (Work: 8, Student: 9)
+                const workVisaCat = categories.find(c => 
+                    c.id === 8 || 
+                    c.slug.toLowerCase() === 'work-visa' || 
+                    c.name.toLowerCase().includes('work visa')
+                );
+                const studentVisaCat = categories.find(c => 
+                    c.id === 9 || 
+                    c.slug.toLowerCase() === 'student-visa' || 
+                    c.name.toLowerCase().includes('student visa')
+                );
+
+                const result: any = {
+                    work: { id: 'work', subCategories: [] },
+                    student: { id: 'student', subCategories: [] }
+                };
+
+                // Helper to process subcategories
+                const processMainCat = async (mainCat: WordPressCategory, key: 'work' | 'student') => {
+                    if (!mainCat) return;
+                    // Find children of the main category
+                    const subCats = categories.filter(c => c.parent === mainCat.id);
+                    
+                    for (const subCat of subCats) {
+                        const posts = await getPosts(50, subCat.id);
+                        if (posts.length > 0) {
+                            result[key].subCategories.push({
+                                id: subCat.slug,
+                                title: subCat.name,
+                                description: subCat.slug.includes('ssw') 
+                                    ? "Specified Skilled Worker (SSW). For skilled workers passing technical and language exams."
+                                    : subCat.slug.includes('titp')
+                                    ? "Technical Intern Training (TITP). Learn Japanese skills through practical employment."
+                                    : subCat.slug.includes('scholarship')
+                                    ? "Fully or partially funded opportunities for outstanding students."
+                                    : `Opportunities and requirements for ${subCat.name} in Japan.`,
+                                items: posts.map(post => ({
+                                    title: post.title.rendered,
+                                    slug: post.slug,
+                                    description: post.excerpt.rendered.replace(/<[^>]*>/g, '').slice(0, 150) + '...',
+                                    image: post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg"
+                                }))
+                            });
+                        }
+                    }
+                };
+
+                const promises = [];
+                if (workVisaCat) promises.push(processMainCat(workVisaCat, 'work'));
+                if (studentVisaCat) promises.push(processMainCat(studentVisaCat, 'student'));
+
+                await Promise.all(promises);
+
+                // Sort subcategories to keep SSW first if it exists
+                result.work.subCategories.sort((a: any, b: any) => 
+                    a.id.includes('ssw') ? -1 : b.id.includes('ssw') ? 1 : 0
+                );
+
+                setVisaData(result);
+                
+                // Set initial active subtab based on activeTab
+                const initialKey = activeTab;
+                if (result[initialKey].subCategories.length > 0) {
+                    setActiveSubTab(result[initialKey].subCategories[0].id);
+                }
+            } catch (error) {
+                console.error("Error loading visa data from WordPress:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadVisaData();
+    }, []);
 
     const handleTabChange = (tab: 'student' | 'work') => {
+        if (!visaData || !visaData[tab]) return;
+        setLoading(true);
         setActiveTab(tab);
-        setActiveSubTab(visaData[tab].subCategories[0].id);
+        if (visaData[tab].subCategories.length > 0) {
+            setActiveSubTab(visaData[tab].subCategories[0].id);
+        }
+        setTimeout(() => setLoading(false), 600);
     };
 
-    const activeData = visaData[activeTab];
-    const currentSubCategory = activeData.subCategories.find(sub => sub.id === activeSubTab) || activeData.subCategories[0];
+    const handleSubTabChange = (id: string) => {
+        setLoading(true);
+        setActiveSubTab(id);
+        setTimeout(() => setLoading(false), 400);
+    };
+
+    const activeData = visaData ? visaData[activeTab] : null;
+    const currentSubCategory = activeData?.subCategories.find((sub: any) => sub.id === activeSubTab) || activeData?.subCategories[0];
+
+    const VisaCardSkeleton = () => (
+        <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm animate-pulse">
+            <div className="h-48 bg-slate-100 w-full" />
+            <div className="p-5 space-y-4">
+                <div className="h-4 bg-slate-100 rounded w-full" />
+                <div className="space-y-2">
+                    <div className="h-3 bg-slate-50 rounded w-full" />
+                    <div className="h-3 bg-slate-50 rounded w-full" />
+                    <div className="h-3 bg-slate-50 rounded w-2/3" />
+                </div>
+                <div className="pt-4 flex flex-col gap-2">
+                    <div className="h-10 bg-slate-50 rounded-lg w-full" />
+                    <div className="h-10 bg-slate-50 rounded-lg w-full" />
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <main className="min-h-screen relative overflow-x-hidden bg-white">
@@ -104,7 +164,7 @@ export default function VisaPage() {
             </section>
 
             {/* Visa Content Section */}
-            <section className="py-16 md:py-20 bg-white">
+            <section className="py-16 md:py-20 bg-white min-h-[800px]">
                 <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
 
                     {/* Step 1: Main Visa Type Tabs */}
@@ -150,44 +210,47 @@ export default function VisaPage() {
                     </div>
 
                     {/* Step 2: Sub-category sidebar + Items grid */}
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={activeTab}
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -16 }}
-                            transition={{ duration: 0.3 }}
-                            className="flex flex-col lg:flex-row gap-8"
-                        >
-                            {/* LEFT: Sub-category Selector */}
-                            <div className="lg:w-72 xl:w-80 flex-shrink-0">
-                                <p className="text-overline text-slate-400 mb-4">Step 2 — Select Program</p>
-                                <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
-                                    {activeData.subCategories.map((sub) => (
-                                        <button
-                                            key={sub.id}
-                                            onClick={() => setActiveSubTab(sub.id)}
-                                            className={`flex-shrink-0 lg:flex-shrink text-left p-4 rounded-2xl border-2 transition-all duration-300 w-52 lg:w-full ${
-                                                activeSubTab === sub.id
-                                                    ? 'border-saku-dark bg-saku-dark text-white shadow-lg'
-                                                    : 'border-slate-100 bg-slate-50 text-slate-700 hover:bg-white hover:border-slate-200 hover:shadow-md'
-                                            }`}
-                                        >
-                                            <div className="flex items-center justify-between gap-2">
-                                                <div className="min-w-0">
-                                                    <div className={`font-bold text-label leading-tight ${activeSubTab === sub.id ? 'text-white' : 'text-slate-800'}`}>{sub.title}</div>
-                                                    <div className={`text-label mt-0.5 ${activeSubTab === sub.id ? 'text-white/60' : 'text-slate-400'}`}>{sub.items.length} program{sub.items.length !== 1 ? 's' : ''}</div>
-                                                </div>
-                                                {activeSubTab === sub.id && <ChevronRight size={16} className="flex-shrink-0 text-white/70" />}
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        {/* LEFT: Sub-category Selector */}
+                        <div className="lg:w-72 xl:w-80 flex-shrink-0">
+                            <p className="text-overline text-slate-400 mb-4">Step 2 — Select Program</p>
+                            <div className="flex flex-row lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
+                                {activeData?.subCategories.map((sub: any) => (
+                                    <button
+                                        key={sub.id}
+                                        onClick={() => handleSubTabChange(sub.id)}
+                                        className={`flex-shrink-0 lg:flex-shrink text-left p-4 rounded-2xl border-2 transition-all duration-300 w-52 lg:w-full ${
+                                            activeSubTab === sub.id
+                                                ? 'border-saku-dark bg-saku-dark text-white shadow-lg'
+                                                : 'border-slate-100 bg-slate-50 text-slate-700 hover:bg-white hover:border-slate-200 hover:shadow-md'
+                                        }`}
+                                    >
+                                        <div className="flex items-center justify-between gap-2">
+                                            <div className="min-w-0">
+                                                <div className={`font-bold text-label leading-tight ${activeSubTab === sub.id ? 'text-white' : 'text-slate-800'}`}>{sub.title}</div>
+                                                <div className={`text-label mt-0.5 ${activeSubTab === sub.id ? 'text-white/60' : 'text-slate-400'}`}>{sub.items.length} program{sub.items.length !== 1 ? 's' : ''}</div>
                                             </div>
-                                        </button>
-                                    ))}
-                                </div>
+                                            {activeSubTab === sub.id && <ChevronRight size={16} className="flex-shrink-0 text-white/70" />}
+                                        </div>
+                                    </button>
+                                ))}
                             </div>
+                        </div>
 
-                            {/* RIGHT: Items Grid */}
-                            <div className="flex-1 min-w-0">
-                                <AnimatePresence mode="wait">
+                        {/* RIGHT: Items Grid */}
+                        <div className="flex-1 min-w-0">
+                            <AnimatePresence mode="wait">
+                                {loading || !currentSubCategory ? (
+                                    <motion.div
+                                        key="skeleton"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6"
+                                    >
+                                        {[1, 2, 3, 4, 5, 6].map((i) => <VisaCardSkeleton key={i} />)}
+                                    </motion.div>
+                                ) : (
                                     <motion.div
                                         key={activeSubTab}
                                         initial={{ opacity: 0, x: 16 }}
@@ -216,12 +279,12 @@ export default function VisaPage() {
                                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                                         />
                                                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                                                        <h3 className="absolute bottom-4 left-4 right-4 font-display text-label font-bold text-white z-10 leading-tight">{item.title}</h3>
+                                                        <h3 className="absolute bottom-4 left-4 right-4 font-display text-label font-bold text-white z-10 leading-tight" dangerouslySetInnerHTML={{ __html: item.title }} />
                                                     </div>
                                                     <div className="p-5 flex flex-col flex-grow">
-                                                        <p className="text-body text-slate-500 leading-relaxed mb-5 flex-grow">{item.description}</p>
+                                                        <p className="text-body text-slate-500 leading-relaxed mb-5 flex-grow line-clamp-3" dangerouslySetInnerHTML={{ __html: item.description }} />
                                                         <div className="flex flex-col gap-2 mt-auto">
-                                                            <Link href={`/visa/details/${item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} className="w-full bg-slate-50 border border-slate-200 text-saku-dark text-center py-2.5 font-bold tracking-wider text-xs hover:border-saku-red hover:text-saku-red transition-all uppercase rounded-lg">
+                                                            <Link href={`/news/${item.slug}`} className="w-full bg-slate-50 border border-slate-200 text-saku-dark text-center py-2.5 font-bold tracking-wider text-xs hover:border-saku-red hover:text-saku-red transition-all uppercase rounded-lg">
                                                                 VIEW REQUIREMENTS
                                                             </Link>
                                                             <Link href="/contact" className="w-full bg-saku-red text-white text-center py-2.5 font-bold tracking-wider text-xs hover:bg-saku-dark transition-all active:scale-[0.98] uppercase rounded-lg">
@@ -233,10 +296,10 @@ export default function VisaPage() {
                                             ))}
                                         </div>
                                     </motion.div>
-                                </AnimatePresence>
-                            </div>
-                        </motion.div>
-                    </AnimatePresence>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </div>
                 </div>
             </section>
 

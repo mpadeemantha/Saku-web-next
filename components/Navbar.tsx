@@ -24,6 +24,7 @@ const Navbar = () => {
         { name: "Language Courses", href: "/courses" },
         { name: "SSW Program", href: "/ssw" },
         { name: "Visa", href: "/visa" },
+        { name: "News", href: "/news" },
         { name: "About", href: "/about" },
         { name: "Contact", href: "/contact" },
     ];
