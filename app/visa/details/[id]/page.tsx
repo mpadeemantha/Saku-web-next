@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export const dynamic = 'force-static';
 export const revalidate = 3600;
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
     try {
