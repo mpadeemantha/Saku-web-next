@@ -11,7 +11,7 @@ export const dynamicParams = false;
 
 export async function generateStaticParams() {
     try {
-        const posts = await getPosts(100); 
+        const posts = await getPosts(500); 
         
         if (!posts || posts.length === 0) {
             console.warn("No news posts found for static params, using fallback.");
