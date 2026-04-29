@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 
@@ -13,7 +14,7 @@ const slides = [
         description: "Intensive JLPT N5/N4 courses designed for serious learners. Modern classrooms meet traditional excellence.",
         image: "/bg1.png",
         button1: "Explore Courses",
-        button2: "Free Consultation",
+
     },
     {
         id: 2,
@@ -22,7 +23,6 @@ const slides = [
         description: "Launch your professional journey with our Specified Skilled Worker (SSW) programs and visa assistance.",
         image: "/bg1.png",
         button1: "SSW Programs",
-        button2: "Success Stories",
     },
     {
         id: 3,
@@ -31,7 +31,6 @@ const slides = [
         description: "Immerse yourself in 'Life in Japan' through our cultural integration programs and vibrant festivals.",
         image: "/bg1.png",
         button1: "Cultural Events",
-        button2: "Life in Japan",
     },
 ];
 
@@ -113,12 +112,11 @@ const Hero = () => {
                             transition={{ duration: 0.8, delay: 1.8 }}
                             className="flex flex-col sm:flex-row gap-6"
                         >
-                            <button className="glass px-10 py-5 text-white font-bold tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-500 hover:scale-105 active:scale-95">
-                                {slides[current].button1}
-                            </button>
-                            <button className="glass-dark px-10 py-5 text-white font-bold tracking-[0.2em] text-sm hover:bg-saku-red transition-all duration-500 hover:scale-105 active:scale-95">
-                                {slides[current].button2}
-                            </button>
+                            <Link href="/contact">
+                                <button className="glass px-10 py-5 text-white font-bold tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-500 hover:scale-105 active:scale-95">
+                                    {slides[current].button1}
+                                </button>
+                            </Link>
                         </motion.div>
                     </motion.div>
 

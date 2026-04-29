@@ -18,12 +18,12 @@ const contactDetails = [
     {
         icon: Mail,
         label: "Email Us",
-        lines: ["info@sakujls.lk", "vishara@sakujls.lk"],
+        lines: ["info@sakujls.lk",],
     },
     {
         icon: Clock,
         label: "Opening Hours",
-        lines: ["Mon – Fri: 8:00 AM – 5:00 PM", "Sat – Sun: 8:00 AM – 2:00 PM"],
+        lines: ["Mon – Fri: 9:00 AM – 5:00 PM",],
     },
 ];
 
