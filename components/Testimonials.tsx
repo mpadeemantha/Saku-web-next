@@ -2,8 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { Star as StarIcon } from "lucide-react";
+import { Star as StarIcon, UserCircle } from "lucide-react";
 
 const testimonials = [
     {
@@ -11,56 +10,48 @@ const testimonials = [
         role: "SSW Graduate",
         location: "Nagoya, Japan",
         text: "Saku changed my life. Thanks to their SSW training, I am now working as a technician in Nagoya. Phenomenal support!",
-        image: "",
     },
     {
         name: "Nilmini Alwis",
         role: "JLPT N4 Student",
         location: "Colombo, Sri Lanka",
         text: "The fusion of culture and language at Saku makes learning fun. It's about understanding the Japanese lifestyle.",
-        image: "",
     },
     {
         name: "Suraj Bandara",
         role: "Working in Tokyo",
         location: "Tokyo, Japan",
         text: "From my first day in Colombo to arrival at Haneda, Saku was with me. Their team is transparent and trustworthy.",
-        image: "",
     },
     {
         name: "Amara Perera",
         role: "University Student",
         location: "Osaka, Japan",
         text: "Securing a university spot in Japan felt impossible until I joined Saku. Their partnerships made it seamless.",
-        image: "",
     },
     {
         name: "Dinesh Fernando",
         role: "Hotel Management",
         location: "Kyoto, Japan",
         text: "The SSW training was rigorous but worth it. Saku taught me the work ethics needed to succeed in Japan.",
-        image: "",
     },
     {
         name: "Ishara Silva",
         role: "JLPT N2 Candidate",
         location: "Kandy, Sri Lanka",
         text: "Advanced Japanese is tough, but Saku's teachers make it manageable. Their study materials are top-notch.",
-        image: "",
     },
     {
         name: "Rohan Gunaratne",
         role: "Construction Spec.",
         location: "Fukuoka, Japan",
         text: "I was worried about moving to Japan, but Saku handled everything—from language to visa paperwork.",
-        image: "",
     },
     {
         name: "Sanduni Madusha",
         role: "Business Consultant",
         location: "Tokyo, Japan",
         text: "The business Japanese course at Saku is exceptional. It gave me confidence for professional meetings.",
-        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200",
     }
 ];
 
@@ -109,13 +100,8 @@ const Testimonials = () => {
                                     &quot;{t.text}&quot;
                                 </p>
                                 <div className="flex items-center gap-4 border-t border-gray-50 pt-6">
-                                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md">
-                                        <Image
-                                            src={t.image}
-                                            alt={t.name}
-                                            fill
-                                            className="object-cover"
-                                        />
+                                    <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-slate-50 border border-slate-100 text-slate-300">
+                                        <UserCircle size={40} strokeWidth={1.5} />
                                     </div>
                                     <div>
                                         <h4 className="font-display font-bold text-lg text-saku-dark leading-none mb-1">
