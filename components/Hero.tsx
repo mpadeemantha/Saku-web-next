@@ -12,25 +12,27 @@ const slides = [
         title: "Master the Art of Japanese",
         subtitle: "Education",
         description: "Intensive JLPT N5/N4 courses designed for serious learners. Modern classrooms meet traditional excellence.",
-        image: "/bg1.png",
+        image: "/bg1.webp",
         button1: "Explore Courses",
-
+        href: "/courses",
     },
     {
         id: 2,
         title: "Your Career in Japan Starts Here",
         subtitle: "Career & SSW",
         description: "Launch your professional journey with our Specified Skilled Worker (SSW) programs and visa assistance.",
-        image: "/bg1.png",
+        image: "/Saku Banner 2.webp",
         button1: "SSW Programs",
+        href: "/ssw",
     },
     {
         id: 3,
         title: "Discover the Heart of Japan",
         subtitle: "Culture",
         description: "Immerse yourself in 'Life in Japan' through our cultural integration programs and vibrant festivals.",
-        image: "/bg1.png",
+        image: "/bg3.webp",
         button1: "Cultural Events",
+        href: "/news",
     },
 ];
 
@@ -112,7 +114,7 @@ const Hero = () => {
                             transition={{ duration: 0.8, delay: 1.8 }}
                             className="flex flex-col sm:flex-row gap-6"
                         >
-                            <Link href="/contact">
+                            <Link href={slides[current].href}>
                                 <button className="glass px-10 py-5 text-white font-bold tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-all duration-500 hover:scale-105 active:scale-95">
                                     {slides[current].button1}
                                 </button>
