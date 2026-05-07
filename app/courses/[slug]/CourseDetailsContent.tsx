@@ -3,7 +3,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, ArrowRight, Clock, GraduationCap, Calendar, Users, Globe } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, GraduationCap, Calendar, Users, Globe, Star } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -116,39 +116,42 @@ export default function CourseDetailsContent({ post }: { post: WordPressPost }) 
                                     </Link>
                                 </div>
 
-                                {/* Quick Info */}
+                                {/* Reviews Section */}
                                 <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                                    <div className="px-6 py-4 border-b border-slate-50 bg-slate-50/50">
-                                        <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest">Course Details</h3>
+                                    <div className="px-6 py-4 border-b border-slate-50 bg-slate-50/50 flex justify-between items-center">
+                                        <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest">Student Reviews</h3>
+                                        <div className="flex gap-0.5 text-amber-400">
+                                            {[...Array(5)].map((_, i) => <Star key={i} size={10} fill="currentColor" />)}
+                                        </div>
                                     </div>
                                     <div className="p-6 space-y-6">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-saku-red border border-slate-100">
-                                                <Clock size={20} />
+                                        {[
+                                            {
+                                                name: "Dilum S.",
+                                                review: "The N4 prep was intense but exactly what I needed. Passed with high scores!",
+                                                stars: 5
+                                            },
+                                            {
+                                                name: "Anjali M.",
+                                                review: "Great teachers and support. The online classes were very flexible for my schedule.",
+                                                stars: 5
+                                            }
+                                        ].map((review, i) => (
+                                            <div key={i} className={i !== 0 ? "pt-6 border-t border-slate-50" : ""}>
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <div className="w-6 h-6 rounded-full bg-saku-red/10 flex items-center justify-center text-[10px] font-bold text-saku-red">
+                                                        {review.name[0]}
+                                                    </div>
+                                                    <span className="font-bold text-saku-dark text-xs">{review.name}</span>
+                                                </div>
+                                                <p className="text-slate-500 text-[11px] leading-relaxed italic">
+                                                    "{review.review}"
+                                                </p>
                                             </div>
-                                            <div>
-                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Duration</p>
-                                                <p className="text-saku-dark font-bold">6 Months</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-blue-500 border border-slate-100">
-                                                <Calendar size={20} />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Intake</p>
-                                                <p className="text-saku-dark font-bold">April / October</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-amber-500 border border-slate-100">
-                                                <Users size={20} />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Class Mode</p>
-                                                <p className="text-saku-dark font-bold">On-Campus / Online</p>
-                                            </div>
-                                        </div>
+                                        ))}
+                                        <button className="w-full py-3 bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-slate-100 transition-colors">
+                                            View All Reviews
+                                        </button>
                                     </div>
                                 </div>
 
