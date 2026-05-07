@@ -3,7 +3,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, ArrowRight, Clock, TrendingUp, Globe } from "lucide-react";
+import { ArrowLeft, ArrowRight, Globe } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -115,32 +115,7 @@ export default function VisaDetailsContent({ post }: { post: WordPressPost }) {
                                     </Link>
                                 </div>
 
-                                {/* Quick Info */}
-                                <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                                    <div className="px-6 py-4 border-b border-slate-50 bg-slate-50/50">
-                                        <h3 className="font-bold text-xs text-slate-400 uppercase tracking-widest">Quick Information</h3>
-                                    </div>
-                                    <div className="p-6 space-y-6">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-saku-red border border-slate-100">
-                                                <Clock size={20} />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Processing Time</p>
-                                                <p className="text-slate-700 font-bold">3–6 Months</p>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-amber-500 border border-slate-100">
-                                                <TrendingUp size={20} />
-                                            </div>
-                                            <div>
-                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Global Demand</p>
-                                                <p className="text-slate-700 font-bold">Very High</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
 
                                 {/* Back link */}
                                 <Link href="/visa" className="flex items-center justify-center gap-2 w-full text-slate-400 hover:text-saku-red text-xs font-bold transition-all py-4 group uppercase tracking-widest">
