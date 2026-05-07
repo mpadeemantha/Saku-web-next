@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { GraduationCap, FileText, Users, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const services = [
@@ -11,29 +11,24 @@ const services = [
         title: "Language School",
         subtitle: "Excellence in Japanese",
         description: "Comprehensive JLPT N5 to N1 courses, SSW training, and conversational Japanese for all levels. Our native-standard curriculum ensures you master the language effectively.",
-        icon: <GraduationCap size={24} className="text-white" />,
         image: "/class.webp",
-        items: [],
-        gridClass: "md:col-span-1",
+        number: "01",
         href: "/courses",
     },
     {
-        title: "SSW Skill Programes ",
+        title: "SSW Skill Programmes",
         subtitle: "Your Smooth Transition",
         description: "Navigating the complexities of Japanese visas made simple. From student to skilled worker visas, we've got you covered.",
-        icon: <FileText size={24} className="text-white" />,
         image: "/visa.png",
-        items: [],
-        gridClass: "md:col-span-1",
+        number: "02",
         href: "/ssw",
     },
     {
-        title: "Visa Consulting Service ",
+        title: "Visa Consulting Service",
         subtitle: "Career Advisory",
         description: "Book a personalized session with our experts to map out your education and career path in Japan.",
-        icon: <Users size={24} className="text-white" />,
         image: "/consult.webp",
-        gridClass: "md:col-span-1",
+        number: "03",
         href: "/visa",
     },
 ];
@@ -55,7 +50,7 @@ const Services = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: index * 0.1 }}
                             viewport={{ once: true }}
-                            className={`group bg-white border border-gray-100 relative overflow-hidden flex flex-col hover:border-saku-red/30 transition-all duration-500 shadow-sm hover:shadow-xl ${service.gridClass}`}
+                            className="group bg-white border border-gray-100 relative overflow-hidden flex flex-col hover:border-saku-red/30 transition-all duration-500 shadow-sm hover:shadow-xl"
                         >
                             {/* Image Header */}
                             <div className="relative h-64 w-full overflow-hidden">
@@ -65,46 +60,44 @@ const Services = () => {
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                                {/* Floating Icon */}
-                                <div className="absolute top-6 left-6 w-12 h-12 bg-saku-red flex items-center justify-center shadow-lg z-10">
-                                    {service.icon}
+                                {/* Number Badge */}
+                                <div className="absolute top-6 left-6 z-10">
+                                    <span className="font-display text-5xl font-bold text-white/20 leading-none select-none">
+                                        {service.number}
+                                    </span>
                                 </div>
 
-                                <div className="absolute bottom-6 left-6 z-10">
-                                    <span className="text-white/80 text-sm font-bold uppercase tracking-[0.2em]">{service.subtitle}</span>
-                                    <h3 className="text-white font-display text-2xl font-bold mt-1 uppercase tracking-wider">{service.title}</h3>
+                                {/* Title overlay */}
+                                <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
+                                    <div className="h-[2px] w-8 bg-saku-red mb-3 group-hover:w-14 transition-all duration-500" />
+                                    <span className="text-white/70 text-[10px] font-bold uppercase tracking-[0.3em] block mb-1">
+                                        {service.subtitle}
+                                    </span>
+                                    <h3 className="text-white font-display text-xl font-bold uppercase tracking-wider leading-tight">
+                                        {service.title}
+                                    </h3>
                                 </div>
                             </div>
 
+                            {/* Body */}
                             <div className="p-8 flex-grow flex flex-col justify-between">
-                                <div>
-                                    <p className="text-gray-600 leading-relaxed mb-6 font-sans">
-                                        {service.description}
-                                    </p>
+                                <p className="text-gray-600 leading-relaxed mb-8 font-sans">
+                                    {service.description}
+                                </p>
 
-                                    {service.items && (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                                            {service.items.map((item, i) => (
-                                                <div key={i} className="flex items-center text-sm font-semibold text-saku-dark/70 bg-gray-50 px-3 py-2 border-l-2 border-saku-red/30">
-                                                    {item}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <Link href={service.href} className="flex items-center justify-between border-t border-gray-50 pt-6 cursor-pointer group/link w-full">
-                                    <div className="flex items-center text-saku-dark font-bold text-sm tracking-[0.2em] hover:text-saku-red transition-colors uppercase">
-                                        Discover More
-                                        <ArrowRight size={14} className="ml-2 transform group-hover/link:translate-x-2 transition-transform h-4 w-4" />
+                                <Link href={service.href} className="flex items-center gap-3 group/link">
+                                    <div className="w-8 h-8 bg-saku-dark group-hover/link:bg-saku-red flex items-center justify-center transition-colors duration-300 flex-shrink-0">
+                                        <ArrowRight size={14} className="text-white transform group-hover/link:translate-x-0.5 transition-transform" />
                                     </div>
-                                    <div className="h-px flex-grow mx-4 bg-gray-100 group-hover:bg-saku-red/20 transition-colors" />
+                                    <span className="text-saku-dark font-bold text-xs tracking-[0.2em] uppercase group-hover/link:text-saku-red transition-colors">
+                                        Discover More
+                                    </span>
                                 </Link>
                             </div>
 
-                            {/* Decorative Corner Element */}
+                            {/* Decorative Corner */}
                             <div className="absolute bottom-0 right-0 w-2 h-2 bg-saku-red transform scale-0 group-hover:scale-100 transition-transform duration-300" />
                         </motion.div>
                     ))}
@@ -115,4 +108,3 @@ const Services = () => {
 };
 
 export default Services;
-
