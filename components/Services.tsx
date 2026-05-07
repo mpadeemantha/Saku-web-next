@@ -12,7 +12,6 @@ const services = [
         subtitle: "Excellence in Japanese",
         description: "Comprehensive JLPT N5 to N1 courses, SSW training, and conversational Japanese for all levels. Our native-standard curriculum ensures you master the language effectively.",
         image: "/class.webp",
-        number: "01",
         href: "/courses",
     },
     {
@@ -20,7 +19,6 @@ const services = [
         subtitle: "Your Smooth Transition",
         description: "Navigating the complexities of Japanese visas made simple. From student to skilled worker visas, we've got you covered.",
         image: "/visa.png",
-        number: "02",
         href: "/ssw",
     },
     {
@@ -28,7 +26,6 @@ const services = [
         subtitle: "Career Advisory",
         description: "Book a personalized session with our experts to map out your education and career path in Japan.",
         image: "/consult.webp",
-        number: "03",
         href: "/visa",
     },
 ];

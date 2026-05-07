@@ -2,8 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { Star as StarIcon } from "lucide-react";
+import { Star as StarIcon, UserCircle2 } from "lucide-react";
 
 const testimonials = [
     {
@@ -11,56 +10,56 @@ const testimonials = [
         role: "SSW Graduate",
         location: "Nagoya, Japan",
         text: "Saku changed my life. Thanks to their SSW training, I am now working as a technician in Nagoya. Phenomenal support!",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200",
+        image: "",
     },
     {
         name: "Nilmini Alwis",
         role: "JLPT N4 Student",
         location: "Colombo, Sri Lanka",
         text: "The fusion of culture and language at Saku makes learning fun. It's about understanding the Japanese lifestyle.",
-        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200",
+        image: "",
     },
     {
         name: "Suraj Bandara",
         role: "Working in Tokyo",
         location: "Tokyo, Japan",
         text: "From my first day in Colombo to arrival at Haneda, Saku was with me. Their team is transparent and trustworthy.",
-        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200",
+        image: "",
     },
     {
         name: "Amara Perera",
         role: "University Student",
         location: "Osaka, Japan",
         text: "Securing a university spot in Japan felt impossible until I joined Saku. Their partnerships made it seamless.",
-        image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200",
+        image: "",
     },
     {
         name: "Dinesh Fernando",
         role: "Hotel Management",
         location: "Kyoto, Japan",
         text: "The SSW training was rigorous but worth it. Saku taught me the work ethics needed to succeed in Japan.",
-        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200",
+        image: "",
     },
     {
         name: "Ishara Silva",
         role: "JLPT N2 Candidate",
         location: "Kandy, Sri Lanka",
         text: "Advanced Japanese is tough, but Saku's teachers make it manageable. Their study materials are top-notch.",
-        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200",
+        image: "",
     },
     {
         name: "Rohan Gunaratne",
         role: "Construction Spec.",
         location: "Fukuoka, Japan",
         text: "I was worried about moving to Japan, but Saku handled everything—from language to visa paperwork.",
-        image: "https://images.unsplash.com/photo-1552058544-f2b08422138a?q=80&w=200",
+        image: "",
     },
     {
         name: "Sanduni Madusha",
         role: "Business Consultant",
         location: "Tokyo, Japan",
         text: "The business Japanese course at Saku is exceptional. It gave me confidence for professional meetings.",
-        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200",
+        image: "https://unsplash.com/illustrations/a-person-with-a-heart-on-their-head-r9M-Qe6Thgc",
     }
 ];
 
@@ -109,13 +108,8 @@ const Testimonials = () => {
                                     &quot;{t.text}&quot;
                                 </p>
                                 <div className="flex items-center gap-4 border-t border-gray-50 pt-6">
-                                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md">
-                                        <Image
-                                            src={t.image}
-                                            alt={t.name}
-                                            fill
-                                            className="object-cover"
-                                        />
+                                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-saku-red/20 shadow-md bg-saku-red/5 flex items-center justify-center flex-shrink-0">
+                                        <UserCircle2 size={40} className="text-saku-red/40" />
                                     </div>
                                     <div>
                                         <h4 className="font-display font-bold text-lg text-saku-dark leading-none mb-1">
