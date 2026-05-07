@@ -59,13 +59,6 @@ const Services = () => {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                                {/* Number Badge */}
-                                <div className="absolute top-6 left-6 z-10">
-                                    <span className="font-display text-5xl font-bold text-white/20 leading-none select-none">
-                                        {service.number}
-                                    </span>
-                                </div>
-
                                 {/* Title overlay */}
                                 <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
                                     <div className="h-[2px] w-8 bg-saku-red mb-3 group-hover:w-14 transition-all duration-500" />
