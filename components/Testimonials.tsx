@@ -2,7 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Star as StarIcon, UserCircle2 } from "lucide-react";
+import Image from "next/image";
+import { Star as StarIcon } from "lucide-react";
 
 const testimonials = [
     {
@@ -59,7 +60,7 @@ const testimonials = [
         role: "Business Consultant",
         location: "Tokyo, Japan",
         text: "The business Japanese course at Saku is exceptional. It gave me confidence for professional meetings.",
-        image: "https://unsplash.com/illustrations/a-person-with-a-heart-on-their-head-r9M-Qe6Thgc",
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200",
     }
 ];
 
@@ -108,8 +109,13 @@ const Testimonials = () => {
                                     &quot;{t.text}&quot;
                                 </p>
                                 <div className="flex items-center gap-4 border-t border-gray-50 pt-6">
-                                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-saku-red/20 shadow-md bg-saku-red/5 flex items-center justify-center flex-shrink-0">
-                                        <UserCircle2 size={40} className="text-saku-red/40" />
+                                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md">
+                                        <Image
+                                            src={t.image}
+                                            alt={t.name}
+                                            fill
+                                            className="object-cover"
+                                        />
                                     </div>
                                     <div>
                                         <h4 className="font-display font-bold text-lg text-saku-dark leading-none mb-1">

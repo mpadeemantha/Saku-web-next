@@ -14,7 +14,7 @@ const Footer = () => {
         <footer className="bg-saku-dark border-t border-white/5 pt-20 pb-10 relative overflow-hidden">
             {/* WhatsApp Floating Button */}
             <a
-                href="https://wa.me/94771234567"
+                href="https://wa.me/94740132946"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center gap-2 group"

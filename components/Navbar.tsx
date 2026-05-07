@@ -122,7 +122,7 @@ const Navbar = () => {
 
                         <div className="space-y-6">
                             <div className="h-[1px] bg-white/10 w-full" />
-                            <p className="text-gray-400 text-base md:text-lg font-sans">+94 77 123 4567 • hello@sakujls.lk</p>
+                            <p className="text-gray-400 text-base md:text-lg font-sans">+94 74 013 2946 • hello@sakujls.lk</p>
                         </div>
                     </motion.div>
                 )}
