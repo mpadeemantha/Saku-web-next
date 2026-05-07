@@ -27,12 +27,12 @@ const slides = [
     },
     {
         id: 3,
-        title: "Discover the Heart of Japan",
-        subtitle: "Culture",
-        description: "Immerse yourself in 'Life in Japan' through our cultural integration programs and vibrant festivals.",
+        title: "Navigate Your Journey in Japan",
+        subtitle: "Visa",
+        description: "Navigating the complexities of Japanese visas made simple. From student to skilled worker visas, we've got you covered.",
         image: "/bg3.webp",
-        button1: "Cultural Events",
-        href: "/news",
+        button1: "Visa",
+        href: "/visa",
     },
 ];
 
