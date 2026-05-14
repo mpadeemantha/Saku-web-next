@@ -67,25 +67,7 @@ export default function AboutPage() {
             </section>
 
             {/* ── Stats Bar ── */}
-            <div className="bg-white border-b border-slate-100">
-                <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
-                    <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-100">
-                        {stats.map((stat, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 12 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.1 }}
-                                className="flex flex-col items-center text-center py-8 px-4"
-                            >
-                                <span className="font-display text-3xl sm:text-4xl font-black text-saku-dark">{stat.value}</span>
-                                <span className="text-label text-slate-400 mt-1">{stat.label}</span>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+
 
             {/* ── Who We Are — 2-col ── */}
             <section className="py-16 md:py-24">
@@ -111,10 +93,6 @@ export default function AboutPage() {
                                     />
                                 </div>
                                 {/* Badge */}
-                                <div className="absolute -bottom-6 -right-4 z-20 bg-white border-2 border-saku-dark rounded-2xl shadow-[6px_6px_0px_#000000] px-6 py-4">
-                                    <span className="font-display text-3xl font-black text-saku-dark block leading-none">10+</span>
-                                    <span className="text-label text-slate-500 mt-1 block">Years of Legacy</span>
-                                </div>
                             </div>
                         </motion.div>
 
