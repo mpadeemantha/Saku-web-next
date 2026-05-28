@@ -13,6 +13,16 @@ export default function VisaDetailsContent({ post }: { post: WordPressPost }) {
     const imageUrl = post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "/student/ff-saku.jpg";
     const sanitizedContent = post.content.rendered;
 
+    const cleanTitle = post.title.rendered
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/&#8211;/g, '-')
+        .replace(/&amp;/g, '&')
+        .replace(/&#8217;/g, "'")
+        .replace(/&#038;/g, "&")
+        .trim();
+    const whatsappMessage = `Hello, I'm interested in applying for the ${cleanTitle} Visa!`;
+    const whatsappUrl = `https://wa.me/94740132946?text=${encodeURIComponent(whatsappMessage)}`;
+
     return (
         <main className="min-h-screen bg-slate-50 selection:bg-saku-red selection:text-white">
             <Navbar />
@@ -25,15 +35,15 @@ export default function VisaDetailsContent({ post }: { post: WordPressPost }) {
                         <Globe size={400} className="text-gray-500 animate-[spin_120s_linear_infinite]" />
                     </div>
                 </div>
-                
+
                 <div className="container mx-auto px-4 sm:px-6 relative z-10 flex flex-col items-center text-center">
                     <div className="max-w-4xl">
                         {/* Back Link */}
-                        <Link 
-                            href="/visa" 
+                        <Link
+                            href="/visa"
                             className="inline-flex items-center gap-2 text-white/40 hover:text-white text-[10px] font-bold tracking-[0.4em] uppercase mb-12 transition-colors group"
                         >
-                            <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" /> 
+                            <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" />
                             BACK TO VISA GUIDE
                         </Link>
 
@@ -47,7 +57,7 @@ export default function VisaDetailsContent({ post }: { post: WordPressPost }) {
                         </div>
 
                         {/* Title with matching scale */}
-                        <h1 
+                        <h1
                             className="font-display text-4xl md:text-5xl lg:text-7xl font-bold mb-8 leading-tight drop-shadow-sm"
                             dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                         />
@@ -58,73 +68,78 @@ export default function VisaDetailsContent({ post }: { post: WordPressPost }) {
                 </div>
             </section>
 
-                {/* Page Body */}
-                <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-12">
-                    <div className="flex flex-col lg:flex-row gap-12">
-                        {/* ── MAIN CONTENT ── */}
-                        <article className="flex-1 min-w-0 space-y-8">
-                            {/* Card 1: Featured Image / Media */}
-                            <motion.div 
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden"
-                            >
-                                <div className="relative h-64 md:h-[450px] w-full bg-slate-100">
-                                    <Image
-                                        src={imageUrl}
-                                        alt={post.title.rendered}
-                                        fill
-                                        className="object-cover"
-                                        priority
-                                    />
-                                </div>
-                                <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Visa Program Media</span>
-                                    <div className="flex gap-1">
-                                        <div className="w-1 h-1 rounded-full bg-saku-red"></div>
-                                        <div className="w-1 h-1 rounded-full bg-saku-red/40"></div>
-                                        <div className="w-1 h-1 rounded-full bg-saku-red/20"></div>
-                                    </div>
-                                </div>
-                            </motion.div>
-
-                            {/* Card 2: Main Content */}
-                            <motion.div 
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 }}
-                                className="bg-white rounded-3xl p-8 md:p-12 border border-slate-100 shadow-sm"
-                            >
-                                <div 
-                                    className="prose-saku max-w-none"
-                                    dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+            {/* Page Body */}
+            <div className="container mx-auto px-4 sm:px-6 max-w-6xl py-12">
+                <div className="flex flex-col lg:flex-row gap-12">
+                    {/* ── MAIN CONTENT ── */}
+                    <article className="flex-1 min-w-0 space-y-8">
+                        {/* Card 1: Featured Image / Media */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden"
+                        >
+                            <div className="relative h-64 md:h-[450px] w-full bg-slate-100">
+                                <Image
+                                    src={imageUrl}
+                                    alt={post.title.rendered}
+                                    fill
+                                    className="object-cover"
+                                    priority
                                 />
-                            </motion.div>
-                        </article>
-
-                        {/* ── SIDEBAR ── */}
-                        <aside className="lg:w-72 xl:w-80 flex-shrink-0">
-                            <div className="sticky top-28 space-y-6">
-                                {/* CTA Card */}
-                                <div className="bg-saku-dark text-white rounded-3xl p-8 border-2 border-saku-dark shadow-xl relative overflow-hidden group">
-                                    <div className="absolute top-0 right-0 w-32 h-32 bg-saku-red/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform duration-700"></div>
-                                    <h3 className="font-display text-2xl font-bold mb-4 relative z-10">Start Your Journey</h3>
-                                    <p className="text-white/60 text-sm mb-8 leading-relaxed relative z-10">Our expert team will help you with every step of the Japanese visa application process.</p>
-                                    <Link href="/contact" className="flex items-center justify-center gap-3 w-full bg-saku-red text-white py-4 rounded-2xl font-bold text-sm hover:bg-white hover:text-saku-dark transition-all duration-300 group/btn relative z-10 shadow-lg shadow-saku-red/20 uppercase tracking-widest">
-                                        Apply Now <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
-                                    </Link>
+                            </div>
+                            <div className="px-8 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Visa Program Media</span>
+                                <div className="flex gap-1">
+                                    <div className="w-1 h-1 rounded-full bg-saku-red"></div>
+                                    <div className="w-1 h-1 rounded-full bg-saku-red/40"></div>
+                                    <div className="w-1 h-1 rounded-full bg-saku-red/20"></div>
                                 </div>
+                            </div>
+                        </motion.div>
 
+                        {/* Card 2: Main Content */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="bg-white rounded-3xl p-8 md:p-12 border border-slate-100 shadow-sm"
+                        >
+                            <div
+                                className="prose-saku max-w-none"
+                                dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+                            />
+                        </motion.div>
+                    </article>
 
-
-                                {/* Back link */}
-                                <Link href="/visa" className="flex items-center justify-center gap-2 w-full text-slate-400 hover:text-saku-red text-xs font-bold transition-all py-4 group uppercase tracking-widest">
-                                    <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Browse All Visas
+                    {/* ── SIDEBAR ── */}
+                    <aside className="lg:w-72 xl:w-80 flex-shrink-0">
+                        <div className="sticky top-28 space-y-6">
+                            {/* CTA Card */}
+                            <div className="bg-saku-dark text-white rounded-3xl p-8 border-2 border-saku-dark shadow-xl relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-saku-red/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform duration-700"></div>
+                                <h3 className="font-display text-2xl font-bold mb-4 relative z-10">Start Your Journey</h3>
+                                <p className="text-white/60 text-sm mb-8 leading-relaxed relative z-10">Our expert team will help you with every step of the Japanese visa application process.</p>
+                                <Link
+                                    href={whatsappUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center justify-center gap-3 w-full bg-saku-red text-white py-4 rounded-2xl font-bold text-sm hover:bg-white hover:text-saku-dark transition-all duration-300 group/btn relative z-10 shadow-lg shadow-saku-red/20 uppercase tracking-widest"
+                                >
+                                    Apply Now <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
-                        </aside>
-                    </div>
+
+
+
+                            {/* Back link */}
+                            <Link href="/visa" className="flex items-center justify-center gap-2 w-full text-slate-400 hover:text-saku-red text-xs font-bold transition-all py-4 group uppercase tracking-widest">
+                                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Browse All Visas
+                            </Link>
+                        </div>
+                    </aside>
                 </div>
+            </div>
             <Footer />
         </main>
     );

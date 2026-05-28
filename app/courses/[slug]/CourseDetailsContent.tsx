@@ -14,6 +14,16 @@ export default function CourseDetailsContent({ post }: { post: WordPressPost }) 
     const imageUrl = (featuredMedia as any)?.source_url || "/student/ff-saku.jpg";
     const sanitizedContent = post.content.rendered;
 
+    const cleanTitle = post.title.rendered
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/&#8211;/g, '-')
+        .replace(/&amp;/g, '&')
+        .replace(/&#8217;/g, "'")
+        .replace(/&#038;/g, "&")
+        .trim();
+    const whatsappMessage = `Hello, I'm interested in joining the ${cleanTitle} course!`;
+    const whatsappUrl = `https://wa.me/94740132946?text=${encodeURIComponent(whatsappMessage)}`;
+
     return (
         <main className="min-h-screen bg-slate-50 selection:bg-saku-red selection:text-white">
             <Navbar />
@@ -111,7 +121,12 @@ export default function CourseDetailsContent({ post }: { post: WordPressPost }) 
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-saku-red/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-110 transition-transform duration-700"></div>
                                     <h3 className="font-display text-2xl font-bold mb-4 relative z-10">Enroll Now</h3>
                                     <p className="text-white/60 text-sm mb-8 leading-relaxed relative z-10">Secure your spot in our next intake and begin your journey to native fluency.</p>
-                                    <Link href="/contact" className="flex items-center justify-center gap-3 w-full bg-saku-red text-white py-4 rounded-2xl font-bold text-sm hover:bg-white hover:text-saku-dark transition-all duration-300 group/btn relative z-10 shadow-lg shadow-saku-red/20 uppercase tracking-widest">
+                                    <Link 
+                                        href={whatsappUrl} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        className="flex items-center justify-center gap-3 w-full bg-saku-red text-white py-4 rounded-2xl font-bold text-sm hover:bg-white hover:text-saku-dark transition-all duration-300 group/btn relative z-10 shadow-lg shadow-saku-red/20 uppercase tracking-widest"
+                                    >
                                         Join Course <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
                                     </Link>
                                 </div>

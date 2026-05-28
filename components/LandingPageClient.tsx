@@ -284,7 +284,7 @@ export default function LandingPageClient({ onStart }: LandingPageClientProps) {
           <canvas id="sakura" ref={canvasRef}></canvas>
 
           <div className="hero-content">
-            <h1>WELCOME TO <br /> SAKU JAPANESE LANGUAGE SCHOOL <br /> (PVT) LTD</h1>
+            <h1>WELCOME TO <br /> SAKU JAPANESE LANGUAGE SCHOOL</h1>
             <p>Learn Japanese | Build Skills | Achieve Japan Dreams</p>
             <a
               href="/home"
