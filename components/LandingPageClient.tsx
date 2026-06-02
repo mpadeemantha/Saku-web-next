@@ -28,7 +28,7 @@ export default function LandingPageClient({ onStart }: LandingPageClientProps) {
 
     /* SAKURA IMAGE */
     const sakuraImg = new Image();
-    sakuraImg.src = "https://sakujls.lk/wp-content/uploads/2026/02/sakura-png.png";
+    sakuraImg.src = "/saku/sakura-png.png";
 
     /* UTIL */
     const rand = (a: number, b: number) => Math.random() * (b - a) + a;
@@ -97,7 +97,7 @@ export default function LandingPageClient({ onStart }: LandingPageClientProps) {
       ctx.clearRect(0, 0, w, h);
       petals.forEach((p) => {
         p.update();
-        if (sakuraImg.complete) p.draw();
+        if (sakuraImg.complete && sakuraImg.naturalWidth > 0) p.draw();
       });
       animationFrameId = requestAnimationFrame(animate);
     }
@@ -152,7 +152,7 @@ export default function LandingPageClient({ onStart }: LandingPageClientProps) {
         .bg {
             position: absolute;
             inset: 0;
-            background-image: url("https://sakujls.lk/wp-content/uploads/2026/02/Pink-Bold-Ilustration-Japan-Country-Introduction-Presentation.png");
+            background-image: url("/saku/Pink-Bold-Ilustration-Japan-Country-Introduction-Presentation.png");
             background-size: cover;
             background-position: center;
             z-index: 0;
